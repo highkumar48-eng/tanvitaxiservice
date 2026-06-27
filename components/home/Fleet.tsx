@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { Users, Briefcase, Wind, IndianRupee } from "lucide-react";
-import SectionHeader from "@/components/ui/SectionHeader";
+import { Users, Briefcase, Wind, IndianRupee, ChevronRight } from "lucide-react";
 import { WHATSAPP_PREFILL } from "@/lib/constants";
 
 const fleet = [
@@ -14,22 +14,22 @@ const fleet = [
     image: "/images/fleet_sedan.png",
     passengers: 4,
     luggage: "2 bags",
-    ac: true,
     startingFare: "₹12/km",
-    description: "Perfect for solo or couple travel. Comfortable, fuel-efficient, and ideal for city and outstation trips.",
+    description: "Ideal for solo or couple travel. Comfortable, fuel-efficient, perfect for city and outstation trips.",
     tags: ["Local", "Outstation", "Airport"],
+    featured: false,
   },
   {
     id: "suv",
     name: "SUV",
-    subtitle: "Ertiga · Scorpio · Crysta",
+    subtitle: "Ertiga · Scorpio · XL6",
     image: "/images/fleet_suv.png",
     passengers: 6,
     luggage: "4 bags",
-    ac: true,
     startingFare: "₹16/km",
-    description: "Spacious and powerful. Great for families and groups who want extra legroom and luggage space.",
+    description: "Spacious and powerful. Great for families and groups who need extra legroom and luggage space.",
     tags: ["Family", "Outstation", "Hills"],
+    featured: false,
   },
   {
     id: "innova",
@@ -38,9 +38,8 @@ const fleet = [
     image: "/images/fleet_innova.png",
     passengers: 7,
     luggage: "5 bags",
-    ac: true,
     startingFare: "₹18/km",
-    description: "The gold standard for comfort. Preferred by families, corporates, and wedding parties.",
+    description: "The preferred choice for families, corporates and wedding parties. Premium comfort on every journey.",
     tags: ["Premium", "Corporate", "Wedding"],
     featured: true,
   },
@@ -51,61 +50,74 @@ const fleet = [
     image: "/images/fleet_tempo.png",
     passengers: 17,
     luggage: "Overhead + boot",
-    ac: true,
     startingFare: "₹28/km",
-    description: "Built for groups. Comfortable seating, AC, push-back seats, and plenty of luggage space.",
+    description: "Built for groups. Comfortable seating, AC, push-back seats, and ample luggage space for tours.",
     tags: ["Groups", "Tours", "Pilgrimages"],
+    featured: false,
   },
 ];
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.12, duration: 0.55, ease: "easeOut" as const },
-  }),
-};
+interface FleetProps {
+  limit?: number;
+  showViewAll?: boolean;
+}
 
-export default function Fleet() {
+export default function Fleet({ limit = 4, showViewAll = false }: FleetProps) {
+  const displayedFleet = fleet.slice(0, limit);
+
   return (
-    <section id="fleet" className="py-20 md:py-28 bg-[#080E1A]">
+    <section id="fleet" className="py-16 md:py-20 bg-[#0D1B3E]" aria-label="Our Fleet">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          badge="Our Fleet"
-          title="Choose Your"
-          highlight="Perfect Ride"
-          subtitle="Clean, well-maintained, and inspected before every trip. Every vehicle comes with AC and a verified driver."
-        />
 
-        <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
-          {fleet.map((vehicle, i) => (
+        {/* Header */}
+        <div className="mb-12">
+          <span className="text-xs font-bold text-[#2563EB] uppercase tracking-widest block mb-3">
+            Our Fleet
+          </span>
+          <div className="w-10 h-0.5 bg-[#1B4FD8] mb-5" />
+          <div className="flex items-end justify-between gap-4 flex-wrap">
+            <h2 className="text-2xl md:text-3xl font-bold text-white">
+              Choose Your Perfect Ride
+            </h2>
+            {showViewAll && (
+              <Link
+                href="/fleet"
+                className="flex items-center gap-1.5 text-sm font-semibold text-[#2563EB] hover:gap-2.5 transition-all"
+              >
+                View All Vehicles <ChevronRight size={16} />
+              </Link>
+            )}
+          </div>
+          <p className="text-[#94A3B8] mt-2 max-w-2xl">
+            Clean, well-maintained, and inspected before every trip. All vehicles come with AC and a verified driver.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {displayedFleet.map((vehicle, i) => (
             <motion.div
               key={vehicle.id}
-              custom={i}
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-30px" }}
-              whileHover={{ y: -6, transition: { duration: 0.2 } }}
-              className={`group relative flex flex-col rounded-2xl overflow-hidden border transition-all duration-300 hover:shadow-2xl hover:shadow-black/30 ${
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-20px" }}
+              transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
+              className={`group relative flex flex-col rounded-xl overflow-hidden border transition-all duration-200 hover:-translate-y-1 ${
                 vehicle.featured
-                  ? "border-[#D4AF37]/40 shadow-[0_0_30px_rgba(212,175,55,0.1)]"
-                  : "border-white/8 hover:border-white/15"
-              } bg-[#1E293B]`}
+                  ? "border-[#1B4FD8]/50 bg-[#0F1E45]"
+                  : "border-[#1E3264] bg-[#162040] hover:border-[#1B4FD8]/30"
+              }`}
             >
-              {/* Featured badge */}
               {vehicle.featured && (
-                <div className="absolute top-3 right-3 z-10 px-2.5 py-1 bg-[#D4AF37] text-[#0F172A] text-[10px] font-bold uppercase rounded-full tracking-wider">
+                <div className="absolute top-3 right-3 z-10 px-2.5 py-1 bg-[#1B4FD8] text-white text-[10px] font-bold uppercase rounded-full tracking-wider">
                   Most Popular
                 </div>
               )}
 
-              {/* Image */}
-              <div className="relative h-44 bg-gradient-to-b from-[#0F172A] to-[#1E293B] overflow-hidden">
+              {/* Vehicle image */}
+              <div className="relative h-44 bg-[#0D1B3E] overflow-hidden">
                 <Image
                   src={vehicle.image}
-                  alt={`${vehicle.name} - Tanvi Taxi Services`}
+                  alt={`${vehicle.name} — Tanvi Taxi Services`}
                   fill
                   className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
@@ -114,34 +126,37 @@ export default function Fleet() {
 
               {/* Content */}
               <div className="flex flex-col flex-1 p-5">
-                <p className="text-xs text-slate-500 mb-0.5">{vehicle.subtitle}</p>
-                <h3 className="text-xl font-bold text-white mb-1">{vehicle.name}</h3>
-                <p className="text-sm text-slate-400 leading-relaxed mb-4">{vehicle.description}</p>
+                <p className="text-[10px] text-[#64748B] mb-0.5 uppercase tracking-wider">{vehicle.subtitle}</p>
+                <h3 className="text-lg font-bold text-white mb-2">{vehicle.name}</h3>
+                <p className="text-sm text-[#94A3B8] leading-relaxed mb-4 flex-1">{vehicle.description}</p>
 
                 {/* Specs */}
-                <div className="grid grid-cols-2 gap-2.5 mb-5">
-                  <div className="flex items-center gap-2 text-xs text-slate-300">
-                    <Users size={13} className="text-[#D4AF37] flex-shrink-0" />
-                    {vehicle.passengers} Passengers
+                <div className="grid grid-cols-2 gap-2 mb-4">
+                  <div className="flex items-center gap-1.5 text-xs text-[#94A3B8]">
+                    <Users size={12} className="text-[#2563EB] flex-shrink-0" />
+                    {vehicle.passengers} Seats
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-300">
-                    <Briefcase size={13} className="text-[#D4AF37] flex-shrink-0" />
+                  <div className="flex items-center gap-1.5 text-xs text-[#94A3B8]">
+                    <Briefcase size={12} className="text-[#2563EB] flex-shrink-0" />
                     {vehicle.luggage}
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-300">
-                    <Wind size={13} className="text-[#D4AF37] flex-shrink-0" />
+                  <div className="flex items-center gap-1.5 text-xs text-[#94A3B8]">
+                    <Wind size={12} className="text-[#2563EB] flex-shrink-0" />
                     Air Conditioned
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-300">
-                    <IndianRupee size={13} className="text-[#D4AF37] flex-shrink-0" />
+                  <div className="flex items-center gap-1.5 text-xs text-[#94A3B8]">
+                    <IndianRupee size={12} className="text-[#2563EB] flex-shrink-0" />
                     From {vehicle.startingFare}
                   </div>
                 </div>
 
                 {/* Tags */}
-                <div className="flex flex-wrap gap-1.5 mb-5">
+                <div className="flex flex-wrap gap-1.5 mb-4">
                   {vehicle.tags.map((tag) => (
-                    <span key={tag} className="px-2 py-0.5 text-[10px] font-medium text-slate-400 bg-white/5 border border-white/8 rounded-full">
+                    <span
+                      key={tag}
+                      className="px-2 py-0.5 text-[10px] font-medium text-[#94A3B8] bg-white/5 border border-[#1E3264] rounded-full"
+                    >
                       {tag}
                     </span>
                   ))}
@@ -149,13 +164,13 @@ export default function Fleet() {
 
                 {/* CTA */}
                 <a
-                  href={WHATSAPP_PREFILL("", "")}
+                  href={WHATSAPP_PREFILL()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`mt-auto w-full text-center py-3 rounded-xl text-sm font-bold transition-all duration-200 active:scale-95 ${
+                  className={`mt-auto w-full text-center py-2.5 rounded-lg text-sm font-bold transition-all duration-200 active:scale-95 ${
                     vehicle.featured
-                      ? "bg-[#D4AF37] hover:bg-[#F0D060] text-[#0F172A] shadow-lg shadow-yellow-600/20"
-                      : "bg-white/8 hover:bg-white/15 text-white border border-white/10"
+                      ? "bg-[#1B4FD8] hover:bg-[#1338A8] text-white"
+                      : "bg-white/8 hover:bg-white/15 text-white border border-[#1E3264] hover:border-[#1B4FD8]/40"
                   }`}
                 >
                   Book This Vehicle
@@ -164,6 +179,7 @@ export default function Fleet() {
             </motion.div>
           ))}
         </div>
+
       </div>
     </section>
   );

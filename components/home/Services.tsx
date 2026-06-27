@@ -1,30 +1,28 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { Plane, Navigation, MapPin, ArrowRight, RefreshCw, Briefcase, Bus, ChevronRight } from "lucide-react";
-import SectionHeader from "@/components/ui/SectionHeader";
+import {
+  Plane, Navigation, MapPin, ArrowRight, RefreshCw, Briefcase, Bus, ChevronRight
+} from "lucide-react";
 import { WHATSAPP_PREFILL } from "@/lib/constants";
 
 const services = [
   {
     icon: Plane,
     title: "Airport Transfer",
-    subtitle: "IGI, T1 · T2 · T3",
-    description: "Reliable, punctual airport pick-up and drop with flight tracking. Avoid the last-minute rush — book in advance.",
+    subtitle: "IGI Airport T1 · T2 · T3",
+    description: "Reliable airport pick-up and drop with live flight tracking. Never miss a flight or wait too long for your cab.",
     highlights: ["Flight tracking", "Meet & Greet", "24×7 Available"],
-    color: "text-blue-400",
-    bg: "from-blue-500/10 to-transparent",
-    border: "border-blue-500/15",
+    accentColor: "#1B4FD8",
   },
   {
     icon: Navigation,
     title: "Local Taxi",
     subtitle: "Gurugram · Delhi NCR",
-    description: "Comfortable city rides for shopping, appointments, office commutes or daily travel — always at your service.",
+    description: "Comfortable city rides for shopping, appointments, office commutes or daily errands — always at your service.",
     highlights: ["Hourly packages", "City tours", "Office drops"],
-    color: "text-green-400",
-    bg: "from-green-500/10 to-transparent",
-    border: "border-green-500/15",
+    accentColor: "#16A34A",
   },
   {
     icon: MapPin,
@@ -32,9 +30,7 @@ const services = [
     subtitle: "Pan India",
     description: "Long distance travel made comfortable. Delhi to Jaipur, Agra, Chandigarh, Manali and beyond.",
     highlights: ["Experienced drivers", "Clean vehicles", "Night driving"],
-    color: "text-orange-400",
-    bg: "from-orange-500/10 to-transparent",
-    border: "border-orange-500/15",
+    accentColor: "#0891B2",
   },
   {
     icon: ArrowRight,
@@ -42,9 +38,7 @@ const services = [
     subtitle: "Save on return cost",
     description: "Only pay for the distance you travel. No round-trip charges — perfect for business or one-way journeys.",
     highlights: ["Best rates", "No hidden fees", "GST invoice"],
-    color: "text-purple-400",
-    bg: "from-purple-500/10 to-transparent",
-    border: "border-purple-500/15",
+    accentColor: "#7C3AED",
   },
   {
     icon: RefreshCw,
@@ -52,93 +46,110 @@ const services = [
     subtitle: "Go & Come Back",
     description: "Plan a full day trip or extended travel and return safely. Driver waits at the destination for you.",
     highlights: ["Driver waiting", "Flexible stops", "Hill stations"],
-    color: "text-rose-400",
-    bg: "from-rose-500/10 to-transparent",
-    border: "border-rose-500/15",
+    accentColor: "#DC2626",
   },
   {
     icon: Briefcase,
     title: "Corporate Taxi",
     subtitle: "B2B & Office Cabs",
-    description: "Dedicated cab solutions for corporate offices, business meetings, airport transfers and employee transportation.",
+    description: "Dedicated cab solutions for corporate offices, business meetings, airport transfers and employee transport.",
     highlights: ["Monthly billing", "Multiple vehicles", "Priority support"],
-    color: "text-[#D4AF37]",
-    bg: "from-[#D4AF37]/10 to-transparent",
-    border: "border-[#D4AF37]/15",
+    accentColor: "#1B4FD8",
   },
   {
     icon: Bus,
     title: "Tempo Traveller",
     subtitle: "Group travel · 12–17 seats",
-    description: "Ideal for family trips, pilgrimages, office outings, school tours and group vacations. Spacious and comfortable.",
+    description: "Ideal for family trips, pilgrimages, office outings and school tours. Spacious, comfortable, and AC-equipped.",
     highlights: ["12–17 seater", "Group packages", "AC available"],
-    color: "text-cyan-400",
-    bg: "from-cyan-500/10 to-transparent",
-    border: "border-cyan-500/15",
+    accentColor: "#0891B2",
   },
 ];
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.08, duration: 0.5, ease: "easeOut" as const },
-  }),
-};
+interface ServicesProps {
+  limit?: number;
+  showViewAll?: boolean;
+}
 
-export default function Services() {
+export default function Services({ limit = 7, showViewAll = false }: ServicesProps) {
+  const displayedServices = services.slice(0, limit);
+
   return (
-    <section id="services" className="py-20 md:py-28 bg-[#0F172A]">
+    <section id="services" className="py-16 md:py-20 bg-[#F8FAFC]" aria-label="Taxi Services">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          badge="Our Taxi Services"
-          title="Everything You Need,"
-          highlight="We've Got It"
-          subtitle="From quick city rides to long outstation journeys — one number, all services."
-        />
 
-        <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {services.map((service, i) => {
+        {/* Section header */}
+        <div className="mb-12">
+          <span className="text-xs font-bold text-[#1B4FD8] uppercase tracking-widest block mb-3">
+            Our Taxi Services
+          </span>
+          <div className="w-10 h-0.5 bg-[#1B4FD8] mb-5" />
+          <div className="flex items-end justify-between gap-4 flex-wrap">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#0D1B3E]">
+              Everything You Need, One Number
+            </h2>
+            {showViewAll && (
+              <Link
+                href="/taxi-services"
+                className="flex items-center gap-1.5 text-sm font-semibold text-[#1B4FD8] hover:gap-2.5 transition-all"
+              >
+                View All Services <ChevronRight size={16} />
+              </Link>
+            )}
+          </div>
+          <p className="text-[#64748B] mt-2 max-w-2xl">
+            From quick city rides to long outstation journeys — available 24×7, all services under one brand.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {displayedServices.map((service, i) => {
             const Icon = service.icon;
             return (
               <motion.div
                 key={service.title}
-                custom={i}
-                variants={cardVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-30px" }}
-                whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                className={`group flex flex-col p-6 rounded-2xl bg-gradient-to-b ${service.bg} border ${service.border} bg-[#1E293B]/40 hover:bg-[#1E293B]/60 transition-all duration-300 hover:shadow-xl hover:shadow-black/20`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-20px" }}
+                transition={{ duration: 0.5, delay: i * 0.06, ease: "easeOut" }}
+                className="group bg-white border border-[#E2E8F0] rounded-xl p-5 flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-200"
+                style={{ borderTopColor: service.accentColor, borderTopWidth: "3px" }}
               >
                 {/* Icon */}
-                <div className={`w-12 h-12 rounded-xl bg-white/5 border ${service.border} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                  <Icon size={22} className={service.color} />
+                <div
+                  className="w-11 h-11 rounded-lg flex items-center justify-center mb-4 flex-shrink-0"
+                  style={{ backgroundColor: `${service.accentColor}15` }}
+                >
+                  <Icon size={20} style={{ color: service.accentColor }} />
                 </div>
 
-                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest mb-1">
                   {service.subtitle}
-                </span>
-                <h3 className="text-lg font-bold text-white mb-2">{service.title}</h3>
-                <p className="text-sm text-slate-400 leading-relaxed flex-1 mb-4">{service.description}</p>
+                </p>
+                <h3 className="text-base font-bold text-[#0D1B3E] mb-2">{service.title}</h3>
+                <p className="text-sm text-[#64748B] leading-relaxed flex-1 mb-4">
+                  {service.description}
+                </p>
 
                 {/* Highlights */}
-                <ul className="space-y-1.5 mb-5">
+                <ul className="space-y-1.5 mb-4">
                   {service.highlights.map((h) => (
-                    <li key={h} className="flex items-center gap-2 text-xs text-slate-300">
-                      <span className={`w-1.5 h-1.5 rounded-full ${service.color.replace("text-", "bg-")} flex-shrink-0`} />
+                    <li key={h} className="flex items-center gap-2 text-xs text-[#374151]">
+                      <span
+                        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: service.accentColor }}
+                      />
                       {h}
                     </li>
                   ))}
                 </ul>
 
-                {/* CTA */}
                 <a
                   href={WHATSAPP_PREFILL()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`flex items-center gap-1.5 text-sm font-semibold ${service.color} hover:underline mt-auto`}
+                  className="flex items-center gap-1 text-sm font-semibold mt-auto transition-all duration-150"
+                  style={{ color: service.accentColor }}
                 >
                   Enquire Now <ChevronRight size={14} />
                 </a>
@@ -146,6 +157,7 @@ export default function Services() {
             );
           })}
         </div>
+
       </div>
     </section>
   );

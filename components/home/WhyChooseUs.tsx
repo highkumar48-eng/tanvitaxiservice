@@ -2,124 +2,92 @@
 
 import { motion } from "framer-motion";
 import { Clock, ShieldCheck, Sparkles, BadgeIndianRupee, Timer, HeartHandshake } from "lucide-react";
-import SectionHeader from "@/components/ui/SectionHeader";
 
 const features = [
   {
     icon: Clock,
     title: "24×7 Availability",
-    description: "We're available round the clock — early morning airport runs, late night transfers, or emergency trips. Just call us, any time.",
-    color: "from-blue-500/20 to-blue-600/10",
-    border: "border-blue-500/20",
-    iconColor: "text-blue-400",
+    description: "Early morning airport runs, late night transfers, or emergency trips. We pick up any time, any day.",
+    accent: "#1B4FD8",
   },
   {
     icon: ShieldCheck,
     title: "Verified Drivers",
-    description: "All our drivers undergo strict background verification, are professionally trained, and carry valid commercial licenses.",
-    color: "from-green-500/20 to-green-600/10",
-    border: "border-green-500/20",
-    iconColor: "text-green-400",
+    description: "All drivers are police-verified, professionally trained, and hold valid commercial licenses.",
+    accent: "#16A34A",
   },
   {
     icon: Sparkles,
     title: "Sanitized Vehicles",
-    description: "Every vehicle is cleaned, sanitized, and inspected before each trip. Your health and comfort are our top priority.",
-    color: "from-purple-500/20 to-purple-600/10",
-    border: "border-purple-500/20",
-    iconColor: "text-purple-400",
+    description: "Every vehicle is cleaned, sanitized, and inspected before each trip for your health and comfort.",
+    accent: "#0891B2",
   },
   {
     icon: BadgeIndianRupee,
     title: "Transparent Pricing",
-    description: "No hidden charges. No surge pricing surprises. What we quote is what you pay — with a proper GST invoice.",
-    color: "from-[#D4AF37]/20 to-[#A8871C]/10",
-    border: "border-[#D4AF37]/20",
-    iconColor: "text-[#D4AF37]",
+    description: "No hidden charges. No surge pricing. What we quote is what you pay — with a proper GST invoice.",
+    accent: "#16A34A",
   },
   {
     icon: Timer,
     title: "On-Time Pickup",
-    description: "We track your flight, monitor traffic, and ensure we're waiting before you are. Punctuality is our promise.",
-    color: "from-orange-500/20 to-orange-600/10",
-    border: "border-orange-500/20",
-    iconColor: "text-orange-400",
+    description: "We track your flight, monitor traffic, and ensure we're waiting before you are. Punctuality guaranteed.",
+    accent: "#1B4FD8",
   },
   {
     icon: HeartHandshake,
     title: "Safe & Comfortable",
-    description: "Spacious, well-maintained vehicles with AC, comfortable seating, and a driver who cares about your journey.",
-    color: "from-rose-500/20 to-rose-600/10",
-    border: "border-rose-500/20",
-    iconColor: "text-rose-400",
+    description: "Spacious, well-maintained AC vehicles with a driver who genuinely cares about your journey.",
+    accent: "#DC2626",
   },
 ];
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.1, duration: 0.5, ease: "easeOut" as const },
-  }),
-};
-
 export default function WhyChooseUs() {
   return (
-    <section id="why-choose-us" className="py-20 md:py-28 bg-[#080E1A]">
+    <section id="why-choose-us" className="py-16 md:py-20 bg-[#F8FAFC]" aria-label="Why choose us">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          badge="Why Choose Us"
-          title="Trusted by Thousands"
-          highlight="Across Delhi NCR"
-          subtitle="Experience the difference with a service built on reliability, safety and genuine care for every passenger."
-        />
 
-        <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+        {/* Header */}
+        <div className="mb-12 text-center">
+          <span className="text-xs font-bold text-[#1B4FD8] uppercase tracking-widest block mb-3">
+            Why Choose Us
+          </span>
+          <div className="w-10 h-0.5 bg-[#1B4FD8] mx-auto mb-5" />
+          <h2 className="text-2xl md:text-3xl font-bold text-[#0D1B3E] mb-3">
+            Trusted by Thousands Across Delhi NCR
+          </h2>
+          <p className="text-[#64748B] max-w-2xl mx-auto">
+            Experience the difference with a service built on reliability, safety, and genuine care for every passenger.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {features.map((feature, i) => {
             const Icon = feature.icon;
             return (
               <motion.div
                 key={feature.title}
-                custom={i}
-                variants={cardVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                className={`group relative p-6 rounded-2xl h-full flex flex-col bg-gradient-to-br ${feature.color} border ${feature.border} backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:shadow-black/20`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-20px" }}
+                transition={{ duration: 0.5, delay: i * 0.07, ease: "easeOut" }}
+                className="bg-white border border-[#E2E8F0] rounded-xl p-6 flex gap-4 hover:shadow-md hover:-translate-y-1 transition-all duration-200"
               >
-                {/* Icon */}
-                <div className={`w-12 h-12 rounded-xl bg-white/5 border ${feature.border} flex items-center justify-center flex-shrink-0 mb-5 group-hover:scale-110 transition-transform duration-300`}>
-                  <Icon size={24} className={feature.iconColor} />
+                <div
+                  className="w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0"
+                  style={{ backgroundColor: `${feature.accent}15` }}
+                >
+                  <Icon size={20} style={{ color: feature.accent }} />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-2.5 flex-shrink-0">{feature.title}</h3>
-                <p className="text-sm text-slate-400 leading-relaxed flex-grow">{feature.description}</p>
+                <div>
+                  <h3 className="text-base font-bold text-[#0D1B3E] mb-1.5">{feature.title}</h3>
+                  <p className="text-sm text-[#64748B] leading-relaxed">{feature.description}</p>
+                </div>
               </motion.div>
             );
           })}
         </div>
 
-        {/* Stats row */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5 rounded-2xl overflow-hidden border border-white/5"
-        >
-          {[
-            { value: "5,000+", label: "Trips Completed" },
-            { value: "1,200+", label: "Happy Customers" },
-            { value: "4.9★", label: "Average Rating" },
-            { value: "24×7", label: "Available" },
-          ].map((stat) => (
-            <div key={stat.label} className="flex flex-col items-center justify-center py-8 px-4 bg-[#0F172A] text-center">
-              <span className="text-3xl md:text-4xl font-black text-gradient-gold mb-1">{stat.value}</span>
-              <span className="text-xs md:text-sm text-slate-400 font-medium">{stat.label}</span>
-            </div>
-          ))}
-        </motion.div>
       </div>
     </section>
   );
