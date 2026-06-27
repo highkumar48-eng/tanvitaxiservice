@@ -9,16 +9,20 @@ import FAQ from "@/components/home/FAQ";
 import Gallery from "@/components/home/Gallery";
 import Contact from "@/components/home/Contact";
 import QRPayment from "@/components/home/QRPayment";
+import TourPackages from "@/components/home/TourPackages";
+import Destinations from "@/components/home/Destinations";
 
 export default function HomePage() {
   return (
     <>
       <HeroSection />
-      <WhyChooseUs />
+      <TourPackages />
       <Services />
+      <Destinations />
       <Fleet />
       <BookingForm />
       <FareCalculator />
+      <WhyChooseUs />
       <Testimonials />
       <FAQ />
       <Gallery />

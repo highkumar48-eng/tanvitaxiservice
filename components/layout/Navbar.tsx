@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, Car } from "lucide-react";
+import { Menu, X, Phone, Car, ChevronDown } from "lucide-react";
 import { BUSINESS, CALL_URL, NAV_LINKS, WHATSAPP_PREFILL } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -79,14 +79,37 @@ export default function Navbar() {
           {/* Desktop Nav Links */}
           <ul className="hidden lg:flex items-center gap-1" role="list">
             {NAV_LINKS.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-all duration-200 relative group"
-                >
-                  {link.label}
-                  <span className="absolute bottom-1 left-4 right-4 h-px bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-                </Link>
+              <li key={link.label} className="relative group">
+                {link.sublinks ? (
+                  <>
+                    <button className="flex items-center gap-1 px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-all duration-200">
+                      {link.label}
+                      <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />
+                    </button>
+                    {/* Dropdown Menu */}
+                    <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 min-w-[200px] z-50">
+                      <div className="glass-dark border border-white/10 rounded-xl p-2 shadow-xl flex flex-col gap-1">
+                        {link.sublinks.map((sublink) => (
+                          <Link
+                            key={sublink.label}
+                            href={sublink.href}
+                            className="px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                          >
+                            {sublink.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <Link
+                    href={link.href}
+                    className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition-all duration-200 relative group-hover:text-white"
+                  >
+                    {link.label}
+                    <span className="absolute bottom-1 left-4 right-4 h-px bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
@@ -200,19 +223,41 @@ export default function Navbar() {
                 <ul className="space-y-1" role="list">
                   {NAV_LINKS.map((link, i) => (
                     <motion.li
-                      key={link.href}
+                      key={link.label}
                       custom={i}
                       variants={linkVariants}
                       initial="hidden"
                       animate="visible"
+                      className="flex flex-col"
                     >
-                      <Link
-                        href={link.href}
-                        onClick={() => setIsOpen(false)}
-                        className="flex items-center px-4 py-3.5 text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-200"
-                      >
-                        {link.label}
-                      </Link>
+                      {link.sublinks ? (
+                        <div className="group">
+                          <button className="flex items-center justify-between w-full px-4 py-3.5 text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-200">
+                            {link.label}
+                            <ChevronDown size={16} className="group-hover:rotate-180 transition-transform duration-200" />
+                          </button>
+                          <div className="pl-8 flex flex-col gap-1 py-1 h-0 overflow-hidden group-hover:h-auto opacity-0 group-hover:opacity-100 transition-all duration-300">
+                            {link.sublinks.map((sub) => (
+                              <Link
+                                key={sub.label}
+                                href={sub.href}
+                                onClick={() => setIsOpen(false)}
+                                className="block py-2 text-sm text-slate-400 hover:text-[#D4AF37] transition-colors"
+                              >
+                                {sub.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <Link
+                          href={link.href}
+                          onClick={() => setIsOpen(false)}
+                          className="flex items-center px-4 py-3.5 text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-200"
+                        >
+                          {link.label}
+                        </Link>
+                      )}
                     </motion.li>
                   ))}
                 </ul>

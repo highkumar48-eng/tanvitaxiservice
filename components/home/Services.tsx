@@ -8,7 +8,7 @@ import { WHATSAPP_PREFILL } from "@/lib/constants";
 const services = [
   {
     icon: Plane,
-    title: "Airport Taxi",
+    title: "Airport Transfer",
     subtitle: "IGI, T1 · T2 · T3",
     description: "Reliable, punctual airport pick-up and drop with flight tracking. Avoid the last-minute rush — book in advance.",
     highlights: ["Flight tracking", "Meet & Greet", "24×7 Available"],
@@ -48,7 +48,7 @@ const services = [
   },
   {
     icon: RefreshCw,
-    title: "Round Trip",
+    title: "Round Trip Taxi",
     subtitle: "Go & Come Back",
     description: "Plan a full day trip or extended travel and return safely. Driver waits at the destination for you.",
     highlights: ["Driver waiting", "Flexible stops", "Hill stations"],
@@ -58,7 +58,7 @@ const services = [
   },
   {
     icon: Briefcase,
-    title: "Corporate Travel",
+    title: "Corporate Taxi",
     subtitle: "B2B & Office Cabs",
     description: "Dedicated cab solutions for corporate offices, business meetings, airport transfers and employee transportation.",
     highlights: ["Monthly billing", "Multiple vehicles", "Priority support"],
@@ -92,7 +92,7 @@ export default function Services() {
     <section id="services" className="py-20 md:py-28 bg-[#0F172A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          badge="Our Services"
+          badge="Our Taxi Services"
           title="Everything You Need,"
           highlight="We've Got It"
           subtitle="From quick city rides to long outstation journeys — one number, all services."

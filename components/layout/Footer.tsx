@@ -3,12 +3,13 @@ import { Phone, Mail, MapPin, Car } from "lucide-react";
 import { BUSINESS, CALL_URL, NAV_LINKS, SOCIAL, WHATSAPP_PREFILL } from "@/lib/constants";
 
 const serviceLinks = [
-  { label: "Airport Taxi", href: "/#services" },
+  { label: "Airport Transfer", href: "/#services" },
   { label: "Local Taxi", href: "/#services" },
-  { label: "Outstation Taxi", href: "/#services" },
-  { label: "Corporate Travel", href: "/#services" },
   { label: "One Way Taxi", href: "/#services" },
-  { label: "Wedding Car", href: "/#services" },
+  { label: "Round Trip Taxi", href: "/#services" },
+  { label: "Outstation Taxi", href: "/#services" },
+  { label: "Corporate Taxi", href: "/#services" },
+  { label: "Tempo Traveller", href: "/#services" },
 ];
 
 export default function Footer() {

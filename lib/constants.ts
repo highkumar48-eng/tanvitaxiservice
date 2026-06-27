@@ -2,9 +2,9 @@
 export const BUSINESS = {
   name: "Tanvi Taxi Services",
   tagline: "Your Premium Ride, On Demand",
-  phone: "+91-8779362060",
-  whatsapp: "918779362060", // without + for wa.me links
-  email: "info@tanvitaxiservices.com",
+  phone: "+91-9650277624",
+  whatsapp: "919650277624", // without + for wa.me links
+  email: "tanvitaxiservices@gmail.com",
   upiId: "tanvitaxi@upi",
   address: "Gurugram, Haryana, India",
   city: "Gurugram",
@@ -30,23 +30,95 @@ export const SOCIAL = {
   twitter: "https://twitter.com/tanvitaxi",
 } as const;
 
-export const NAV_LINKS = [
+export type NavLink = {
+  label: string;
+  href: string;
+  sublinks?: { label: string; href: string }[];
+};
+
+export const TOUR_PACKAGES = [
+  { label: "Agra", href: "/#tours" },
+  { label: "Mathura", href: "/#tours" },
+  { label: "Vrindavan", href: "/#tours" },
+  { label: "Haridwar", href: "/#tours" },
+  { label: "Rishikesh", href: "/#tours" },
+  { label: "Dehradun", href: "/#tours" },
+  { label: "Mussoorie", href: "/#tours" },
+  { label: "Kullu", href: "/#tours" },
+  { label: "Kasauli", href: "/#tours" },
+  { label: "Shimla", href: "/#tours" },
+  { label: "Kufri", href: "/#tours" },
+  { label: "Nainital", href: "/#tours" },
+  { label: "Solan", href: "/#tours" },
+  { label: "Binsar", href: "/#tours" },
+  { label: "Ranikhet", href: "/#tours" },
+  { label: "Jim Corbett", href: "/#tours" },
+  { label: "Haldwani", href: "/#tours" },
+  { label: "Almora", href: "/#tours" },
+  { label: "Chardham Yatra", href: "/#tours" },
+  { label: "Golden Temple", href: "/#tours" },
+];
+
+export const DESTINATIONS = [
+  { label: "Agra", href: "/#destinations" },
+  { label: "Mathura", href: "/#destinations" },
+  { label: "Vrindavan", href: "/#destinations" },
+  { label: "Haridwar", href: "/#destinations" },
+  { label: "Rishikesh", href: "/#destinations" },
+  { label: "Dehradun", href: "/#destinations" },
+  { label: "Mussoorie", href: "/#destinations" },
+  { label: "Kullu", href: "/#destinations" },
+  { label: "Kasauli", href: "/#destinations" },
+  { label: "Shimla", href: "/#destinations" },
+  { label: "Kufri", href: "/#destinations" },
+  { label: "Nainital", href: "/#destinations" },
+  { label: "Solan", href: "/#destinations" },
+  { label: "Binsar", href: "/#destinations" },
+  { label: "Ranikhet", href: "/#destinations" },
+  { label: "Jim Corbett", href: "/#destinations" },
+  { label: "Haldwani", href: "/#destinations" },
+  { label: "Almora", href: "/#destinations" },
+  { label: "Chardham Yatra", href: "/#destinations" },
+  { label: "Golden Temple", href: "/#destinations" },
+];
+
+export const NAV_LINKS: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "About", href: "/#why-choose-us" },
-  { label: "Services", href: "/#services" },
+  {
+    label: "Taxi Services",
+    href: "/#services",
+    sublinks: [
+      { label: "Airport Transfer", href: "/#services" },
+      { label: "Local Taxi", href: "/#services" },
+      { label: "One Way Taxi", href: "/#services" },
+      { label: "Round Trip Taxi", href: "/#services" },
+      { label: "Outstation Taxi", href: "/#services" },
+      { label: "Corporate Taxi", href: "/#services" },
+      { label: "Tempo Traveller", href: "/#services" },
+    ],
+  },
+  {
+    label: "Tour Packages",
+    href: "/#tours",
+    sublinks: TOUR_PACKAGES,
+  },
+  {
+    label: "Destinations",
+    href: "/#destinations",
+    sublinks: DESTINATIONS,
+  },
   { label: "Fleet", href: "/#fleet" },
-  { label: "Gallery", href: "/#gallery" },
   { label: "Contact", href: "/#contact" },
-] as const;
+];
 
 export const SERVICE_LINKS = [
-  { label: "Airport Taxi", href: "/airport-taxi", icon: "Plane" },
-  { label: "Outstation Taxi", href: "/outstation-taxi", icon: "MapPin" },
+  { label: "Airport Transfer", href: "/airport-taxi", icon: "Plane" },
   { label: "Local Taxi", href: "/local-taxi", icon: "Navigation" },
   { label: "One Way Taxi", href: "/one-way-taxi", icon: "ArrowRight" },
-  { label: "Round Trip", href: "/round-trip", icon: "RefreshCw" },
-  { label: "Corporate Travel", href: "/corporate-travel", icon: "Briefcase" },
-  { label: "Wedding Car", href: "/wedding-car", icon: "Heart" },
+  { label: "Round Trip Taxi", href: "/round-trip", icon: "RefreshCw" },
+  { label: "Outstation Taxi", href: "/outstation-taxi", icon: "MapPin" },
+  { label: "Corporate Taxi", href: "/corporate-travel", icon: "Briefcase" },
   { label: "Tempo Traveller", href: "/tempo-traveller", icon: "Bus" },
 ] as const;
 
