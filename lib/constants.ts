@@ -99,6 +99,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: "Destinations", href: "/destinations" },
   { label: "Gallery", href: "/gallery" },
   { label: "Contact", href: "/contact" },
+  { label: "Become a Driver", href: "/become-a-driver" },
 ];
 
 export const SERVICE_LINKS = [

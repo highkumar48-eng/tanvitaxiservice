@@ -5,55 +5,32 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { MapPin, Clock, ChevronRight } from "lucide-react";
 import { WHATSAPP_PREFILL } from "@/lib/constants";
+import { Button } from "@/components/ui/Button";
 
 const packages = [
   {
     id: "agra",
-    title: "Agra Tour",
-    duration: "1–2 Days",
-    price: "From ₹3,500",
-    image: "/images/tour_agra.png",
-    highlights: ["Taj Mahal", "Agra Fort", "Fatehpur Sikri"],
+    title: "Agra Day Tour",
+    duration: "Same Day",
+    price: "From ₹3,999",
+    image: "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Taj Mahal", "Agra Fort", "Yamuna Expressway"],
   },
   {
     id: "mathura",
     title: "Mathura & Vrindavan",
     duration: "1–2 Days",
-    price: "From ₹3,000",
-    image: "/images/tour_mathura.png",
+    price: "From ₹3,499",
+    image: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&q=80&w=800",
     highlights: ["Banke Bihari Temple", "Prem Mandir", "Krishna Janmasthan"],
   },
   {
-    id: "haridwar",
-    title: "Haridwar & Rishikesh",
-    duration: "2–3 Days",
-    price: "From ₹5,500",
-    image: "/images/tour_haridwar.png",
-    highlights: ["Har Ki Pauri", "Ram Jhula", "Triveni Ghat"],
-  },
-  {
-    id: "shimla",
-    title: "Shimla & Kufri",
-    duration: "3–4 Days",
-    price: "From ₹9,500",
-    image: "/images/tour_shimla.png",
-    highlights: ["Mall Road", "Kufri Snow Point", "Jakhu Temple"],
-  },
-  {
-    id: "nainital",
-    title: "Nainital Tour",
-    duration: "2–3 Days",
-    price: "From ₹7,500",
-    image: "/images/tour_nainital.png",
-    highlights: ["Naini Lake", "Snow View Point", "Tiffin Top"],
-  },
-  {
-    id: "corbett",
-    title: "Jim Corbett Safari",
-    duration: "2–3 Days",
-    price: "From ₹8,000",
-    image: "/images/tour_corbett.png",
-    highlights: ["Jungle Safari", "Garjiya Temple", "Corbett Fall"],
+    id: "jaipur",
+    title: "Jaipur Heritage",
+    duration: "2 Days",
+    price: "From ₹8,499",
+    image: "https://images.unsplash.com/photo-1477587458883-471a5ed94245?auto=format&fit=crop&q=80&w=800",
+    highlights: ["Amer Fort", "Hawa Mahal", "Chokhi Dhani"],
   },
 ];
 
@@ -62,91 +39,90 @@ interface TourPackagesProps {
   showViewAll?: boolean;
 }
 
-export default function TourPackages({ limit = 6, showViewAll = false }: TourPackagesProps) {
+export default function TourPackages({ limit = 3, showViewAll = true }: TourPackagesProps) {
   const displayed = packages.slice(0, limit);
 
   return (
-    <section id="tours" className="py-16 md:py-20 bg-white" aria-label="Tour Packages">
+    <section id="tours" className="py-24 bg-[#081423] border-b border-brand-border" aria-label="Tour Packages">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
-        <div className="mb-12">
-          <span className="text-xs font-bold text-[#1B4FD8] uppercase tracking-widest block mb-3">
-            Tour Packages
-          </span>
-          <div className="w-10 h-0.5 bg-[#1B4FD8] mb-5" />
-          <div className="flex items-end justify-between gap-4 flex-wrap">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#0D1B3E]">
-              Popular Outstation Tours
+        <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <div>
+            <span className="text-xs font-bold text-brand-blue uppercase tracking-[2px] block mb-3">
+              Tour Packages
+            </span>
+            <h2 className="text-3xl md:text-4xl font-black text-white uppercase tracking-tight">
+              POPULAR OUTSTATION TOURS
             </h2>
-            {showViewAll && (
-              <Link
-                href="/tour-packages"
-                className="flex items-center gap-1.5 text-sm font-semibold text-[#1B4FD8] hover:gap-2.5 transition-all"
-              >
-                View All Packages <ChevronRight size={16} />
-              </Link>
-            )}
+            <p className="text-brand-text-sec font-light text-xs sm:text-sm mt-2 max-w-2xl">
+              Discover the beauty of India with our comfortable, curated outstation tour packages.
+            </p>
           </div>
-          <p className="text-[#64748B] mt-2 max-w-2xl">
-            Discover the beauty of India with our comfortable, curated outstation tour packages.
-          </p>
+          {showViewAll && (
+            <Link href="/tour-packages" className="flex-shrink-0">
+              <Button variant="secondary" className="gap-2">
+                View All Packages <ChevronRight size={14} />
+              </Button>
+            </Link>
+          )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayed.map((pkg, i) => (
             <motion.article
               key={pkg.id}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-30px" }}
-              transition={{ duration: 0.5, delay: i * 0.08, ease: "easeOut" }}
-              className="group bg-white border border-[#E2E8F0] rounded-xl overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.05, ease: "easeOut" }}
+              className="group bg-brand-card border border-brand-border rounded-xl overflow-hidden hover:border-brand-blue transition-all duration-350"
             >
               {/* Image */}
-              <div className="relative h-52 overflow-hidden bg-[#F1F5F9]">
+              <div className="relative h-64 overflow-hidden bg-brand-bg">
                 <Image
                   src={pkg.image}
                   alt={pkg.title}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
                 {/* Duration badge */}
-                <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1.5 bg-white/90 backdrop-blur-sm rounded-lg text-xs font-semibold text-[#0D1B3E]">
-                  <Clock size={12} className="text-[#1B4FD8]" />
+                <div className="absolute top-4 right-4 flex items-center gap-1 bg-[#081423]/90 border border-brand-border px-2.5 py-1 text-[10px] font-bold text-white uppercase tracking-wider">
+                  <Clock size={10} className="text-brand-blue" />
                   {pkg.duration}
                 </div>
               </div>
 
               {/* Content */}
-              <div className="p-5">
-                <h3 className="text-lg font-bold text-[#0D1B3E] mb-1">{pkg.title}</h3>
-                <p className="text-sm font-semibold text-[#1B4FD8] mb-4">{pkg.price}</p>
+              <div className="p-6">
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-1">{pkg.title}</h3>
+                <p className="text-xs font-bold text-brand-blue mb-4">{pkg.price}</p>
 
-                <ul className="space-y-1.5 mb-5">
+                <ul className="space-y-2 mb-6">
                   {pkg.highlights.map((h) => (
-                    <li key={h} className="flex items-center gap-2 text-sm text-[#475569]">
-                      <MapPin size={13} className="text-[#94A3B8] flex-shrink-0" />
-                      {h}
+                    <li key={h} className="flex items-center gap-2 text-xs text-brand-text-sec">
+                      <MapPin size={12} className="text-brand-text-sec/50 flex-shrink-0" />
+                      <span className="font-light">{h}</span>
                     </li>
                   ))}
                 </ul>
 
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   <a
                     href={WHATSAPP_PREFILL("", pkg.title)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 text-center py-2.5 bg-[#16A34A] hover:bg-[#15803D] text-white text-sm font-bold rounded-lg transition-all duration-200 active:scale-95"
+                    className="flex-1"
                   >
-                    Book Package
+                    <Button variant="primary" size="sm" fullWidth>
+                      Book Tour
+                    </Button>
                   </a>
-                  <Link
-                    href="/tour-packages"
-                    className="px-4 py-2.5 border border-[#E2E8F0] hover:border-[#1B4FD8] text-[#64748B] hover:text-[#1B4FD8] text-sm font-semibold rounded-lg transition-all duration-200"
-                  >
-                    Details
+                  <Link href="/tour-packages" className="flex-1">
+                    <Button variant="secondary" size="sm" fullWidth>
+                      Details
+                    </Button>
                   </Link>
                 </div>
               </div>

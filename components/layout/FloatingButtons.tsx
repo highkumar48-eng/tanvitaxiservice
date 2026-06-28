@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, X } from "lucide-react";
+import { Phone, ArrowUp, Share2, MapPin } from "lucide-react";
 import { BUSINESS, CALL_URL, WHATSAPP_PREFILL } from "@/lib/constants";
 
 function WAIcon({ size = 20 }: { size?: number }) {
@@ -14,109 +14,115 @@ function WAIcon({ size = 20 }: { size?: number }) {
 }
 
 export default function FloatingButtons() {
-  const [visible, setVisible] = useState(false);
-  const [showLabel, setShowLabel] = useState(false);
-  const [dismissed, setDismissed] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [canShare, setCanShare] = useState(false);
 
-  // Show FABs after user has scrolled a bit
   useEffect(() => {
     const handleScroll = () => {
-      setVisible(window.scrollY > 300);
+      setShowScrollTop(window.scrollY > 400);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+    setCanShare(!!navigator.share);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Show label hint once after 3s
-  useEffect(() => {
-    if (!visible || dismissed) return;
-    const t = setTimeout(() => {
-      setShowLabel(true);
-      setTimeout(() => setShowLabel(false), 4000);
-    }, 3000);
-    return () => clearTimeout(t);
-  }, [visible, dismissed]);
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-  if (dismissed) return null;
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: BUSINESS.name,
+          text: `Book premium taxi and tour packages with ${BUSINESS.name}.`,
+          url: window.location.href,
+        });
+      } catch (err) {
+        console.error("Share failed", err);
+      }
+    }
+  };
 
   return (
     <div
       className="fixed bottom-6 right-5 z-40 flex flex-col gap-3 items-end"
-      aria-label="Quick contact buttons"
+      aria-label="Floating Actions"
     >
       <AnimatePresence>
-        {visible && (
-          <>
-            {/* Dismiss button — appears on mobile when scrolled far */}
-            <motion.button
-              key="dismiss"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ delay: 0.5 }}
-              onClick={() => setDismissed(true)}
-              className="w-7 h-7 rounded-full bg-[#1E293B]/80 border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:bg-[#1E293B] transition-all duration-200 sm:hidden"
-              aria-label="Hide floating buttons"
-            >
-              <X size={12} />
-            </motion.button>
-
-            {/* WhatsApp FAB */}
-            <motion.div
-              key="whatsapp"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-              className="relative flex items-center gap-2"
-            >
-              {/* Label tooltip */}
-              <AnimatePresence>
-                {showLabel && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 10 }}
-                    className="hidden sm:block absolute right-full mr-3 whitespace-nowrap bg-[#0D1B3E] text-white text-xs font-medium px-3 py-1.5 rounded-lg shadow-lg"
-                  >
-                    Chat on WhatsApp
-                    <span className="absolute top-1/2 -translate-y-1/2 -right-1.5 w-0 h-0 border-t-4 border-b-4 border-l-4 border-t-transparent border-b-transparent border-l-[#0D1B3E]" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              <a
-                href={WHATSAPP_PREFILL()}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`WhatsApp Tanvi Taxi Services at ${BUSINESS.phone}`}
-                className="relative w-14 h-14 rounded-full bg-[#25D366] hover:bg-[#1AA44E] text-white flex items-center justify-center shadow-xl transition-all duration-200 hover:scale-110 active:scale-95"
-              >
-                {/* Pulse ring */}
-                <span
-                  className="absolute inset-0 rounded-full bg-[#25D366] animate-ping opacity-20"
-                  aria-hidden="true"
-                />
-                <WAIcon size={26} />
-              </a>
-            </motion.div>
-
-            {/* Call FAB */}
-            <motion.a
-              key="call"
-              href={CALL_URL}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.3 }}
-              aria-label={`Call Tanvi Taxi Services at ${BUSINESS.phone}`}
-              className="w-14 h-14 rounded-full bg-[#0D1B3E] hover:bg-[#1B4FD8] text-white flex items-center justify-center shadow-xl border border-[#1E3264] hover:border-[#1B4FD8] transition-all duration-200 hover:scale-110 active:scale-95"
-            >
-              <Phone size={22} />
-            </motion.a>
-          </>
+        {/* Back to Top */}
+        {showScrollTop && (
+          <motion.button
+            key="scrolltop"
+            initial={{ opacity: 0, scale: 0.8, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 10 }}
+            onClick={scrollToTop}
+            className="w-11 h-11 rounded-full bg-brand-card hover:bg-brand-blue border border-brand-border hover:border-brand-blue text-white flex items-center justify-center shadow-lg transition-all duration-200 cursor-pointer"
+            aria-label="Back to Top"
+          >
+            <ArrowUp size={18} />
+          </motion.button>
         )}
+
+        {/* Mobile Share */}
+        {canShare && (
+          <motion.button
+            key="share"
+            initial={{ opacity: 0, scale: 0.8, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 10 }}
+            onClick={handleShare}
+            className="w-11 h-11 rounded-full bg-brand-card border border-brand-border text-white flex items-center justify-center shadow-lg transition-all duration-200 cursor-pointer md:hidden"
+            aria-label="Share Site"
+          >
+            <Share2 size={16} />
+          </motion.button>
+        )}
+
+        {/* Maps FAB */}
+        <motion.a
+          key="maps"
+          href="https://maps.google.com/?q=Gurugram+Haryana+India"
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, scale: 0.8, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.8, y: 10 }}
+          className="w-11 h-11 rounded-full bg-brand-card border border-brand-border text-white flex items-center justify-center shadow-lg transition-all duration-200 cursor-pointer"
+          aria-label="Locate on Google Maps"
+        >
+          <MapPin size={16} className="text-brand-blue" />
+        </motion.a>
+
+        {/* WhatsApp FAB */}
+        <motion.a
+          key="whatsapp"
+          href={WHATSAPP_PREFILL()}
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, scale: 0.8, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.8, y: 10 }}
+          className="w-14 h-14 rounded-full bg-[#12B76A] text-white flex items-center justify-center shadow-xl transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer relative"
+          aria-label="WhatsApp Us"
+        >
+          <span className="absolute inset-0 rounded-full bg-[#12B76A] animate-ping opacity-20" aria-hidden="true" />
+          <WAIcon size={24} />
+        </motion.a>
+
+        {/* Call FAB */}
+        <motion.a
+          key="call"
+          href={CALL_URL}
+          initial={{ opacity: 0, scale: 0.8, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.8, y: 10 }}
+          className="w-14 h-14 rounded-full bg-[#081423] hover:bg-brand-blue text-white flex items-center justify-center shadow-xl border border-brand-border hover:border-brand-blue transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer"
+          aria-label="Call Us"
+        >
+          <Phone size={20} />
+        </motion.a>
       </AnimatePresence>
     </div>
   );

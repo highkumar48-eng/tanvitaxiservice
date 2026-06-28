@@ -1,19 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import {
-  Phone, MapPin, Calendar, Car, ChevronDown,
-  Shield, Clock, Star
-} from "lucide-react";
-import { BUSINESS, CALL_URL, WHATSAPP_PREFILL } from "@/lib/constants";
-
-const vehicleOptions = [
-  { value: "sedan", label: "Sedan (Swift Dzire, Honda City)" },
-  { value: "suv", label: "SUV (Innova, Ertiga)" },
-  { value: "tempo", label: "Tempo Traveller (12–17 Seater)" },
-];
+import { Phone, MapPin, Calendar, Car, ChevronRight, Star, Shield, Clock } from "lucide-react";
+import { BUSINESS, CALL_URL } from "@/lib/constants";
+import { Button } from "@/components/ui/Button";
 
 function WAIcon({ size = 16 }: { size?: number }) {
   return (
@@ -27,22 +18,53 @@ export default function HeroSection() {
   const [pickup, setPickup] = useState("");
   const [drop, setDrop] = useState("");
   const [date, setDate] = useState("");
-  const [vehicle, setVehicle] = useState("");
+  const [vehicle, setVehicle] = useState("sedan");
+  const [isClient, setIsClient] = useState(false);
 
-  const handleGetQuote = () => {
-    const vehicleLabel = vehicleOptions.find((v) => v.value === vehicle)?.label ?? vehicle;
-    const message = [
-      "Hi Tanvi Taxi Services! I'd like a quote:",
-      pickup && `Pickup: ${pickup}`,
-      drop && `Drop: ${drop}`,
-      date && `Date: ${date}`,
-      vehicleLabel && `Vehicle: ${vehicleLabel}`,
+  // Load and save localStorage values
+  useEffect(() => {
+    setIsClient(true);
+    setPickup(localStorage.getItem("hero_pickup") || "");
+    setDrop(localStorage.getItem("hero_drop") || "");
+    setDate(localStorage.getItem("hero_date") || "");
+    setVehicle(localStorage.getItem("hero_vehicle") || "sedan");
+  }, []);
+
+  const updateField = (key: string, value: string, setter: (val: string) => void) => {
+    setter(value);
+    localStorage.setItem(key, value);
+  };
+
+  const getEstimatedFare = () => {
+    if (!pickup || !drop) return "Enter Route";
+    const baseKms = 48; // simulated typical NCR travel distance
+    const rates = { sedan: 12, suv: 16, innova: 18, tempo: 28 };
+    const perKm = rates[vehicle as keyof typeof rates] || 12;
+    const total = baseKms * perKm;
+    return `₹${total.toLocaleString("en-IN")}`;
+  };
+
+  const handleBookNow = () => {
+    const vehicleLabels = {
+      sedan: "Sedan (Dzire / Etios)",
+      suv: "SUV (Ertiga / Scorpio)",
+      innova: "Innova Crysta",
+      tempo: "Tempo Traveller",
+    };
+    const vLabel = vehicleLabels[vehicle as keyof typeof vehicleLabels] || vehicle;
+    const msg = [
+      `🚖 *App Booking Request*`,
+      `Pickup: ${pickup}`,
+      `Drop: ${drop}`,
+      `Vehicle: ${vLabel}`,
+      `Date: ${date}`,
+      `Est. Fare: ${getEstimatedFare()}`,
     ]
       .filter(Boolean)
       .join("\n");
 
     window.open(
-      `https://wa.me/${BUSINESS.whatsapp}?text=${encodeURIComponent(message)}`,
+      `https://wa.me/${BUSINESS.whatsapp}?text=${encodeURIComponent(msg)}`,
       "_blank",
       "noopener,noreferrer"
     );
@@ -51,211 +73,197 @@ export default function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative bg-[#0D1B3E] min-h-[92vh] flex items-center overflow-hidden"
+      className="relative bg-[#081423] py-20 lg:py-28 overflow-hidden border-b border-brand-border"
       aria-label="Hero — Tanvi Taxi Services"
     >
-      {/* ── Background subtle pattern ─────────────────────────────── */}
+      {/* Background patterns */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        {/* Grid dots pattern */}
         <div
-          className="absolute inset-0 opacity-[0.05]"
+          className="absolute inset-0 opacity-[0.02]"
           style={{
             backgroundImage: `radial-gradient(circle, #ffffff 1px, transparent 1px)`,
             backgroundSize: "40px 40px",
           }}
         />
-        {/* Right gradient panel */}
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#0F1E45] to-transparent" />
-        {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#080F23] to-transparent" />
-        {/* Blue accent top-right */}
-        <div className="absolute -top-20 right-1/3 w-80 h-80 rounded-full bg-[#1B4FD8]/10 blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-brand-blue/5 blur-3xl" />
       </div>
 
-      <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-0">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[80vh]">
+      <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
+        {/* Rating Badge */}
+        <div className="inline-flex items-center gap-2 mb-6 border border-brand-border px-3.5 py-1.5 bg-brand-card/35 rounded-full">
+          <div className="flex items-center gap-0.5 text-brand-blue">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} size={11} className="fill-brand-blue" />
+            ))}
+          </div>
+          <span className="text-white text-[10px] font-bold tracking-wider">4.9 RATING</span>
+          <span className="text-brand-text-sec text-[10px] font-light tracking-wide">— TRUSTED TAXI SERVICE SINCE 2012</span>
+        </div>
 
-          {/* ── Left: Content ─────────────────────────────────────── */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            className="flex flex-col"
-          >
-            {/* Rating badge */}
-            <div className="inline-flex items-center gap-2 mb-6 w-fit">
-              <div className="flex items-center gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={13} className="fill-amber-400 text-amber-400" />
-                ))}
-              </div>
-              <span className="text-white text-sm font-semibold">4.9</span>
-              <span className="text-[#94A3B8] text-sm">— Trusted by 1,200+ riders</span>
+        {/* Headline */}
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-none tracking-tight uppercase max-w-4xl mb-6">
+          PREMIUM TAXI SERVICES &amp; <span className="text-brand-blue">TOUR PACKAGES</span>
+        </h1>
+
+        {/* Dynamic services slider/pills list */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-8 text-[9px] sm:text-[10px] font-bold text-brand-blue uppercase tracking-widest max-w-2xl">
+          <span>Taxi Services</span>
+          <span className="text-brand-border">•</span>
+          <span>Airport Transfer</span>
+          <span className="text-brand-border">•</span>
+          <span>Outstation Trips</span>
+          <span className="text-brand-border">•</span>
+          <span>Tour Packages</span>
+          <span className="text-brand-border">•</span>
+          <span>Corporate Travel</span>
+        </div>
+
+        {/* Description */}
+        <p className="text-xs sm:text-sm text-brand-text-sec font-light leading-relaxed mb-10 max-w-2xl">
+          Book executive business rides, rapid airport pickups, and family outstation packages across{" "}
+          <span className="text-white font-medium">Gurugram, Delhi NCR, and Northern India</span>. Vetted chauffeurs, transparent rates, and verified safety since 2012.
+        </p>
+
+        {/* Quick buttons */}
+        <div className="flex items-center justify-center gap-4 mb-16">
+          <a href={CALL_URL}>
+            <Button variant="primary" className="gap-2">
+              <Phone size={14} />
+              Call Dispatch
+            </Button>
+          </a>
+          <a href={`https://wa.me/${BUSINESS.whatsapp}`} target="_blank" rel="noopener noreferrer">
+            <Button variant="whatsapp" className="gap-2">
+              <WAIcon size={14} />
+              WhatsApp Us
+            </Button>
+          </a>
+        </div>
+
+        {/* iPhone Mockup wrapper containing functional quick book app */}
+        <div className="relative w-full max-w-[320px] sm:max-w-[340px]">
+          {/* External shadow glow */}
+          <div className="absolute inset-0 rounded-[50px] bg-brand-blue/10 blur-2xl z-0 pointer-events-none" />
+
+          {/* iPhone Frame */}
+          <div className="relative z-10 w-full bg-black border-[12px] border-slate-900 rounded-[50px] shadow-2xl p-2.5 ring-1 ring-white/10">
+            {/* Speaker receiver */}
+            <div className="absolute top-[6px] left-1/2 -translate-x-1/2 w-28 h-1 bg-slate-800 rounded-full z-30" />
+            
+            {/* Dynamic Island */}
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-full z-30 flex items-center justify-center">
+              <div className="w-2.5 h-2.5 bg-slate-950 rounded-full ml-auto mr-4" />
             </div>
 
-            {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-[3.25rem] font-bold text-white leading-[1.15] tracking-tight mb-5">
-              Safe, Reliable &<br />
-              <span className="text-[#2563EB]">On-Time</span> Taxi Service
-            </h1>
-
-            {/* Description */}
-            <p className="text-base sm:text-lg text-[#94A3B8] leading-relaxed mb-8 max-w-lg">
-              Airport transfers, outstation trips, corporate travel &amp; group tours
-              across <span className="text-white font-medium">Gurugram &amp; Delhi NCR</span>.
-              Available 24×7 with verified drivers and transparent pricing.
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-3 mb-10">
-              <a
-                href={CALL_URL}
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#16A34A] hover:bg-[#15803D] text-white font-bold text-sm rounded-lg transition-all duration-200 shadow-lg active:scale-95"
-              >
-                <Phone size={16} />
-                Call Now — {BUSINESS.phone}
-              </a>
-              <a
-                href={WHATSAPP_PREFILL()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-transparent border-2 border-white/30 hover:border-white/60 hover:bg-white/5 text-white font-bold text-sm rounded-lg transition-all duration-200 active:scale-95"
-              >
-                <WAIcon size={16} />
-                WhatsApp Us
-              </a>
-            </div>
-
-            {/* Trust badges */}
-            <div className="grid grid-cols-3 gap-4 max-w-sm">
-              {[
-                { icon: Shield, text: "Verified Drivers" },
-                { icon: Clock, text: "24×7 Available" },
-                { icon: Car, text: "Clean Vehicles" },
-              ].map(({ icon: Icon, text }) => (
-                <div key={text} className="flex flex-col items-center text-center gap-1.5">
-                  <div className="w-10 h-10 rounded-lg bg-[#1B4FD8]/15 border border-[#1B4FD8]/25 flex items-center justify-center">
-                    <Icon size={18} className="text-[#2563EB]" />
-                  </div>
-                  <span className="text-xs font-medium text-[#94A3B8] leading-tight">{text}</span>
+            {/* Screen Viewport */}
+            <div className="w-full bg-[#081423] rounded-[40px] overflow-hidden pt-9 pb-6 px-4 flex flex-col text-left">
+              {/* App Status Bar */}
+              <div className="flex justify-between items-center text-[9px] text-brand-text-sec/60 font-semibold mb-4 px-2">
+                <span>9:41</span>
+                <div className="flex items-center gap-1">
+                  <span>LTE</span>
+                  <div className="w-3.5 h-2 border border-brand-text-sec/40 rounded-[2px] p-[1px] flex items-center"><div className="w-full h-full bg-brand-text-sec/60" /></div>
                 </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* ── Right: Booking Form ────────────────────────────────── */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
-          >
-            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-2xl">
-              {/* Form header */}
-              <div className="mb-6">
-                <h2 className="text-lg font-bold text-[#0D1B3E] mb-1">Get a Quick Quote</h2>
-                <p className="text-sm text-[#64748B]">Fill in your trip details and we'll respond instantly on WhatsApp.</p>
               </div>
 
-              <div className="space-y-4">
+              {/* App Header */}
+              <div className="flex items-center justify-between mb-4 border-b border-brand-border/40 pb-2">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-5 h-5 bg-brand-blue flex items-center justify-center rounded">
+                    <Car size={11} className="text-white" />
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-white">Tanvi Book</span>
+                </div>
+                <span className="text-[8px] bg-brand-blue/20 text-brand-blue font-bold px-1.5 py-0.5 rounded uppercase">24/7 Live</span>
+              </div>
+
+              {/* App Form */}
+              <div className="space-y-3.5">
                 {/* Pickup */}
                 <div>
-                  <label htmlFor="hero-pickup" className="block text-xs font-semibold text-[#374151] uppercase tracking-wider mb-1.5">
-                    Pickup Location
-                  </label>
+                  <label className="block text-[8px] font-bold text-brand-text-sec uppercase tracking-widest mb-1">Pickup Location</label>
                   <div className="relative">
-                    <MapPin size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#1B4FD8]" />
+                    <MapPin size={11} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-brand-blue" />
                     <input
-                      id="hero-pickup"
                       type="text"
                       placeholder="e.g. IGI Airport Terminal 3"
                       value={pickup}
-                      onChange={(e) => setPickup(e.target.value)}
-                      className="w-full pl-9 pr-3 py-3 border border-[#E2E8F0] rounded-lg text-sm text-[#1E293B] placeholder-[#94A3B8] focus:outline-none focus:border-[#1B4FD8] focus:ring-2 focus:ring-[#1B4FD8]/10 transition-all"
+                      onChange={(e) => updateField("hero_pickup", e.target.value, setPickup)}
+                      className="w-full pl-7 pr-2 py-2 bg-brand-bg-sec border border-brand-border rounded-lg text-[10px] text-white placeholder-slate-600 focus:outline-none focus:border-brand-blue"
                     />
                   </div>
                 </div>
 
                 {/* Drop */}
                 <div>
-                  <label htmlFor="hero-drop" className="block text-xs font-semibold text-[#374151] uppercase tracking-wider mb-1.5">
-                    Drop Location
-                  </label>
+                  <label className="block text-[8px] font-bold text-brand-text-sec uppercase tracking-widest mb-1">Drop Location</label>
                   <div className="relative">
-                    <MapPin size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#1B4FD8]" />
+                    <MapPin size={11} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-brand-blue" />
                     <input
-                      id="hero-drop"
                       type="text"
                       placeholder="e.g. Gurugram Sector 29"
                       value={drop}
-                      onChange={(e) => setDrop(e.target.value)}
-                      className="w-full pl-9 pr-3 py-3 border border-[#E2E8F0] rounded-lg text-sm text-[#1E293B] placeholder-[#94A3B8] focus:outline-none focus:border-[#1B4FD8] focus:ring-2 focus:ring-[#1B4FD8]/10 transition-all"
+                      onChange={(e) => updateField("hero_drop", e.target.value, setDrop)}
+                      className="w-full pl-7 pr-2 py-2 bg-brand-bg-sec border border-brand-border rounded-lg text-[10px] text-white placeholder-slate-600 focus:outline-none focus:border-brand-blue"
                     />
                   </div>
                 </div>
 
-                {/* Date + Vehicle row */}
-                <div className="grid grid-cols-2 gap-3">
+                {/* Vehicle + Date Grid */}
+                <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <label htmlFor="hero-date" className="block text-xs font-semibold text-[#374151] uppercase tracking-wider mb-1.5">
-                      Travel Date
-                    </label>
-                    <div className="relative">
-                      <Calendar size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#1B4FD8]" />
-                      <input
-                        id="hero-date"
-                        type="date"
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
-                        min={new Date().toISOString().split("T")[0]}
-                        className="w-full pl-9 pr-2 py-3 border border-[#E2E8F0] rounded-lg text-sm text-[#1E293B] focus:outline-none focus:border-[#1B4FD8] focus:ring-2 focus:ring-[#1B4FD8]/10 transition-all"
-                      />
-                    </div>
+                    <label className="block text-[8px] font-bold text-brand-text-sec uppercase tracking-widest mb-1">Vehicle</label>
+                    <select
+                      value={vehicle}
+                      onChange={(e) => updateField("hero_vehicle", e.target.value, setVehicle)}
+                      className="w-full px-2 py-2 bg-brand-bg-sec border border-brand-border rounded-lg text-[10px] text-white focus:outline-none focus:border-brand-blue appearance-none cursor-pointer"
+                    >
+                      <option value="sedan">SEDAN</option>
+                      <option value="suv">SUV</option>
+                      <option value="innova">CRYSTA</option>
+                      <option value="tempo">TEMPO</option>
+                    </select>
                   </div>
                   <div>
-                    <label htmlFor="hero-vehicle" className="block text-xs font-semibold text-[#374151] uppercase tracking-wider mb-1.5">
-                      Vehicle
-                    </label>
-                    <div className="relative">
-                      <Car size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#1B4FD8] z-10" />
-                      <select
-                        id="hero-vehicle"
-                        value={vehicle}
-                        onChange={(e) => setVehicle(e.target.value)}
-                        className="w-full pl-9 pr-7 py-3 border border-[#E2E8F0] rounded-lg text-sm text-[#1E293B] focus:outline-none focus:border-[#1B4FD8] focus:ring-2 focus:ring-[#1B4FD8]/10 transition-all appearance-none cursor-pointer bg-white"
-                      >
-                        <option value="">Select</option>
-                        {vehicleOptions.map((opt) => (
-                          <option key={opt.value} value={opt.value}>
-                            {opt.value.charAt(0).toUpperCase() + opt.value.slice(1)}
-                          </option>
-                        ))}
-                      </select>
-                      <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#94A3B8] pointer-events-none" />
-                    </div>
+                    <label className="block text-[8px] font-bold text-brand-text-sec uppercase tracking-widest mb-1">Date</label>
+                    <input
+                      type="date"
+                      value={date}
+                      onChange={(e) => updateField("hero_date", e.target.value, setDate)}
+                      min={isClient ? new Date().toISOString().split("T")[0] : ""}
+                      className="w-full px-2 py-2 bg-brand-bg-sec border border-brand-border rounded-lg text-[10px] text-white focus:outline-none focus:border-brand-blue [color-scheme:dark]"
+                    />
                   </div>
                 </div>
 
-                {/* Submit */}
+                {/* Live Fare Indicator */}
+                <div className="bg-brand-bg-sec border border-brand-border rounded-lg p-2.5 flex items-center justify-between mt-1">
+                  <div>
+                    <div className="text-[7px] font-bold text-brand-text-sec uppercase tracking-wider">Est. Trip Fare</div>
+                    <div className="text-xs font-black text-brand-blue mt-0.5">{getEstimatedFare()}</div>
+                  </div>
+                  <div className="text-right text-[7px] text-brand-text-sec/60 leading-tight">
+                    *Incl. GST<br />Excl. Tolls
+                  </div>
+                </div>
+
+                {/* Book CTA */}
                 <button
-                  onClick={handleGetQuote}
-                  className="w-full flex items-center justify-center gap-2.5 py-3.5 bg-[#16A34A] hover:bg-[#15803D] text-white font-bold text-sm rounded-lg transition-all duration-200 active:scale-95 mt-1"
+                  onClick={handleBookNow}
+                  disabled={!pickup || !drop || !date}
+                  className="w-full py-2.5 bg-brand-blue hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-[10px] font-bold uppercase tracking-wider rounded-lg flex items-center justify-center gap-1 transition-colors duration-150 cursor-pointer"
                 >
-                  <WAIcon size={16} />
-                  Get Quote on WhatsApp
+                  Book Instant Cab
+                  <ChevronRight size={10} />
                 </button>
-
-                {/* Or full booking */}
-                <p className="text-center text-xs text-[#94A3B8]">
-                  Need full booking?{" "}
-                  <Link href="/booking" className="text-[#1B4FD8] font-semibold hover:underline">
-                    Book Here →
-                  </Link>
-                </p>
               </div>
-            </div>
-          </motion.div>
 
+              {/* Bottom Home Indicator */}
+              <div className="w-20 h-0.5 bg-brand-text-sec/30 rounded-full mx-auto mt-6" />
+            </div>
+          </div>
         </div>
+
       </div>
     </section>
   );

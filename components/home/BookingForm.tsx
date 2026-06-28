@@ -8,8 +8,9 @@ import { z } from "zod";
 import { MapPin, Calendar, Clock, Car, User, Phone, Mail, FileText, CheckCircle2, ChevronRight } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { BUSINESS } from "@/lib/constants";
+import { Button } from "@/components/ui/Button";
 
-// ── Zod schema ──────────────────────────────────────────────────────────────
+// Zod schema
 const bookingSchema = z.object({
   pickup: z.string().min(3, "Enter pickup location"),
   drop: z.string().min(3, "Enter drop location"),
@@ -25,9 +26,6 @@ const bookingSchema = z.object({
 
 type BookingFormData = z.infer<typeof bookingSchema>;
 
-// ── Firebase-ready submit handler (stub) ────────────────────────────────────
-// To connect Firebase: import { db } from "@/lib/firebase" and replace this stub.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function submitBooking(_data: BookingFormData): Promise<{ id: string }> {
   await new Promise((res) => setTimeout(res, 800)); // simulate network
   return { id: `TTS-${Date.now()}` };
@@ -58,22 +56,22 @@ interface FieldWrapProps {
 function FieldWrap({ label, error, required, icon, children }: FieldWrapProps) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+      <label className="text-[10px] font-bold text-brand-text-sec uppercase tracking-widest flex items-center gap-1.5">
         {icon}
         {label}
         {required && <span className="text-red-400">*</span>}
       </label>
       {children}
-      {error && <p className="text-xs text-red-400">{error}</p>}
+      {error && <p className="text-xs text-red-400 mt-0.5">{error}</p>}
     </div>
   );
 }
 
 const inputCls =
-  "w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-[#D4AF37]/50 focus:bg-white/8 transition-all duration-200";
+  "w-full px-4 py-3 bg-brand-bg-sec border border-brand-border rounded-none text-xs text-white placeholder-slate-600 focus:outline-none focus:border-brand-blue transition-all duration-200";
 
 const selectCls =
-  "w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:outline-none focus:border-[#D4AF37]/50 transition-all duration-200 cursor-pointer [color-scheme:dark]";
+  "w-full px-4 py-3 bg-brand-bg-sec border border-brand-border rounded-none text-xs text-white focus:outline-none focus:border-brand-blue transition-all duration-200 cursor-pointer [color-scheme:dark]";
 
 export default function BookingForm() {
   const [bookingId, setBookingId] = useState<string | null>(null);
@@ -137,32 +135,32 @@ export default function BookingForm() {
 
   if (bookingId) {
     return (
-      <section id="booking" className="py-20 md:py-28 bg-[#0F172A]">
+      <section id="booking" className="py-24 bg-[#081423] border-b border-brand-border">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="glass-dark border border-[#D4AF37]/20 rounded-2xl p-10"
+            transition={{ duration: 0.4 }}
+            className="bg-brand-card border border-brand-border rounded-xl p-10"
           >
-            <CheckCircle2 size={56} className="text-green-400 mx-auto mb-6" />
-            <h2 className="text-2xl font-black text-white mb-2">Booking Request Sent!</h2>
-            <p className="text-slate-400 mb-4">
+            <CheckCircle2 size={56} className="text-brand-green mx-auto mb-6" />
+            <h2 className="text-xl font-bold uppercase text-white tracking-wider mb-2">Booking Request Sent!</h2>
+            <p className="text-xs text-brand-text-sec font-light mb-4">
               Your booking reference is{" "}
-              <span className="text-[#D4AF37] font-bold">{bookingId}</span>. Our team will confirm via WhatsApp shortly.
+              <span className="text-brand-blue font-bold">{bookingId}</span>. Our team will confirm via WhatsApp shortly.
             </p>
-            <p className="text-sm text-slate-500 mb-8">
+            <p className="text-xs text-brand-text-sec font-light mb-8">
               For immediate assistance, call{" "}
-              <a href={`tel:${BUSINESS.phone}`} className="text-[#D4AF37] hover:underline">
+              <a href={`tel:${BUSINESS.phone}`} className="text-brand-blue font-bold hover:underline">
                 {BUSINESS.phone}
               </a>
             </p>
-            <button
+            <Button
               onClick={() => { setBookingId(null); reset(); }}
-              className="px-8 py-3.5 bg-[#D4AF37] hover:bg-[#F0D060] text-[#0F172A] font-bold rounded-xl text-sm transition-all"
+              variant="primary"
             >
               Book Another Ride
-            </button>
+            </Button>
           </motion.div>
         </div>
       </section>
@@ -170,7 +168,7 @@ export default function BookingForm() {
   }
 
   return (
-    <section id="booking" className="py-20 md:py-28 bg-[#0F172A]">
+    <section id="booking" className="py-24 bg-[#081423] border-b border-brand-border">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           badge="Book a Cab"
@@ -180,16 +178,16 @@ export default function BookingForm() {
         />
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="mt-12 glass-dark border border-white/10 rounded-2xl p-6 sm:p-8"
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="mt-12 bg-brand-card border border-brand-border rounded-xl p-6 sm:p-8"
         >
           <form onSubmit={handleSubmit(onReviewBooking)} noValidate>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               {/* Pickup */}
-              <FieldWrap label="Pickup Location" error={errors.pickup?.message} required icon={<MapPin size={12} className="text-[#D4AF37]" />}>
+              <FieldWrap label="Pickup Location" error={errors.pickup?.message} required icon={<MapPin size={12} className="text-brand-blue" />}>
                 <input
                   {...register("pickup")}
                   placeholder="e.g. IGI Airport Terminal 3"
@@ -198,7 +196,7 @@ export default function BookingForm() {
               </FieldWrap>
 
               {/* Drop */}
-              <FieldWrap label="Drop Location" error={errors.drop?.message} required icon={<MapPin size={12} className="text-[#D4AF37]" />}>
+              <FieldWrap label="Drop Location" error={errors.drop?.message} required icon={<MapPin size={12} className="text-brand-blue" />}>
                 <input
                   {...register("drop")}
                   placeholder="e.g. Sector 29, Gurugram"
@@ -207,29 +205,29 @@ export default function BookingForm() {
               </FieldWrap>
 
               {/* Trip Type */}
-              <FieldWrap label="Trip Type" error={errors.tripType?.message} required icon={<Car size={12} className="text-[#D4AF37]" />}>
+              <FieldWrap label="Trip Type" error={errors.tripType?.message} required icon={<Car size={12} className="text-brand-blue" />}>
                 <select {...register("tripType")} className={selectCls}>
-                  <option value="" disabled className="bg-[#1E293B]">Select trip type</option>
-                  <option value="one-way" className="bg-[#1E293B]">One Way</option>
-                  <option value="round-trip" className="bg-[#1E293B]">Round Trip</option>
-                  <option value="local" className="bg-[#1E293B]">Local (Hourly)</option>
-                  <option value="airport" className="bg-[#1E293B]">Airport Transfer</option>
+                  <option value="" disabled className="bg-[#101826]">Select trip type</option>
+                  <option value="one-way" className="bg-[#101826]">One Way</option>
+                  <option value="round-trip" className="bg-[#101826]">Round Trip</option>
+                  <option value="local" className="bg-[#101826]">Local (Hourly)</option>
+                  <option value="airport" className="bg-[#101826]">Airport Transfer</option>
                 </select>
               </FieldWrap>
 
               {/* Vehicle */}
-              <FieldWrap label="Vehicle Type" error={errors.vehicle?.message} required icon={<Car size={12} className="text-[#D4AF37]" />}>
+              <FieldWrap label="Vehicle Type" error={errors.vehicle?.message} required icon={<Car size={12} className="text-brand-blue" />}>
                 <select {...register("vehicle")} className={selectCls}>
-                  <option value="" disabled className="bg-[#1E293B]">Select vehicle</option>
-                  <option value="sedan" className="bg-[#1E293B]">Sedan (Swift Dzire / Honda City)</option>
-                  <option value="suv" className="bg-[#1E293B]">SUV (Ertiga / Scorpio)</option>
-                  <option value="innova" className="bg-[#1E293B]">Innova Crysta</option>
-                  <option value="tempo" className="bg-[#1E293B]">Tempo Traveller</option>
+                  <option value="" disabled className="bg-[#101826]">Select vehicle</option>
+                  <option value="sedan" className="bg-[#101826]">Sedan (Swift Dzire / Honda City)</option>
+                  <option value="suv" className="bg-[#101826]">SUV (Ertiga / Scorpio)</option>
+                  <option value="innova" className="bg-[#101826]">Innova Crysta</option>
+                  <option value="tempo" className="bg-[#101826]">Tempo Traveller</option>
                 </select>
               </FieldWrap>
 
               {/* Date */}
-              <FieldWrap label="Travel Date" error={errors.date?.message} required icon={<Calendar size={12} className="text-[#D4AF37]" />}>
+              <FieldWrap label="Travel Date" error={errors.date?.message} required icon={<Calendar size={12} className="text-brand-blue" />}>
                 <input
                   {...register("date")}
                   type="date"
@@ -239,7 +237,7 @@ export default function BookingForm() {
               </FieldWrap>
 
               {/* Time */}
-              <FieldWrap label="Pickup Time" error={errors.time?.message} required icon={<Clock size={12} className="text-[#D4AF37]" />}>
+              <FieldWrap label="Pickup Time" error={errors.time?.message} required icon={<Clock size={12} className="text-brand-blue" />}>
                 <input
                   {...register("time")}
                   type="time"
@@ -248,7 +246,7 @@ export default function BookingForm() {
               </FieldWrap>
 
               {/* Name */}
-              <FieldWrap label="Your Name" error={errors.name?.message} required icon={<User size={12} className="text-[#D4AF37]" />}>
+              <FieldWrap label="Your Name" error={errors.name?.message} required icon={<User size={12} className="text-brand-blue" />}>
                 <input
                   {...register("name")}
                   placeholder="e.g. Rajesh Kumar"
@@ -257,7 +255,7 @@ export default function BookingForm() {
               </FieldWrap>
 
               {/* Mobile */}
-              <FieldWrap label="Mobile Number" error={errors.mobile?.message} required icon={<Phone size={12} className="text-[#D4AF37]" />}>
+              <FieldWrap label="Mobile Number" error={errors.mobile?.message} required icon={<Phone size={12} className="text-brand-blue" />}>
                 <input
                   {...register("mobile")}
                   type="tel"
@@ -268,7 +266,7 @@ export default function BookingForm() {
               </FieldWrap>
 
               {/* Email */}
-              <FieldWrap label="Email (Optional)" error={errors.email?.message} icon={<Mail size={12} className="text-[#D4AF37]" />}>
+              <FieldWrap label="Email (Optional)" error={errors.email?.message} icon={<Mail size={12} className="text-brand-blue" />}>
                 <input
                   {...register("email")}
                   type="email"
@@ -278,7 +276,7 @@ export default function BookingForm() {
               </FieldWrap>
 
               {/* Instructions */}
-              <FieldWrap label="Special Instructions" error={errors.instructions?.message} icon={<FileText size={12} className="text-[#D4AF37]" />}>
+              <FieldWrap label="Special Instructions" error={errors.instructions?.message} icon={<FileText size={12} className="text-brand-blue" />}>
                 <textarea
                   {...register("instructions")}
                   placeholder="e.g. Need child seat, pickup from Gate 3..."
@@ -289,28 +287,17 @@ export default function BookingForm() {
             </div>
 
             <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
-              <button
+              <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full sm:w-auto flex items-center justify-center gap-2.5 px-8 py-3.5 bg-[#D4AF37] hover:bg-[#F0D060] text-[#0F172A] font-bold text-sm rounded-xl transition-all duration-200 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-yellow-600/20"
+                variant="primary"
+                className="w-full sm:w-auto"
               >
-                {isSubmitting ? (
-                  <span className="flex items-center gap-2">
-                    <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                    </svg>
-                    Processing...
-                  </span>
-                ) : (
-                  <>
-                    Review Booking <ChevronRight size={16} />
-                  </>
-                )}
-              </button>
-              <p className="text-xs text-slate-500 text-center sm:text-left">
+                {isSubmitting ? "Processing..." : "Review Booking"}
+              </Button>
+              <p className="text-xs text-brand-text-sec font-light text-center sm:text-left">
                 We&apos;ll confirm your ride via WhatsApp on{" "}
-                <span className="text-slate-300 font-medium">{BUSINESS.phone}</span>
+                <span className="text-white font-medium">{BUSINESS.phone}</span>
               </p>
             </div>
           </form>
@@ -324,20 +311,20 @@ export default function BookingForm() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
             onClick={(e) => { if (e.target === e.currentTarget) setShowSummary(false); }}
           >
             <motion.div
-              initial={{ scale: 0.9, y: 20 }}
+              initial={{ scale: 0.98, y: 10 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              transition={{ duration: 0.3 }}
-              className="w-full max-w-md glass-dark border border-[#D4AF37]/20 rounded-2xl p-6 overflow-y-auto max-h-[90vh]"
+              exit={{ scale: 0.98, y: 10 }}
+              transition={{ duration: 0.2 }}
+              className="w-full max-w-md bg-brand-card border border-brand-border rounded-xl p-6 overflow-y-auto max-h-[90vh]"
             >
-              <h3 className="text-lg font-bold text-white mb-1">Booking Summary</h3>
-              <p className="text-xs text-slate-400 mb-6">Please review before confirming</p>
+              <h3 className="text-sm font-bold uppercase tracking-wider text-white mb-1">Booking Summary</h3>
+              <p className="text-xs text-brand-text-sec font-light mb-6">Please review before confirming</p>
 
-              <dl className="space-y-3 text-sm mb-6">
+              <dl className="space-y-3 text-xs mb-6 border-b border-brand-border pb-4">
                 {[
                   { label: "Name", value: formData.name },
                   { label: "Mobile", value: formData.mobile },
@@ -350,26 +337,28 @@ export default function BookingForm() {
                   ...(formData.instructions ? [{ label: "Notes", value: formData.instructions }] : []),
                 ].map((item) => (
                   <div key={item.label} className="flex justify-between gap-4">
-                    <dt className="text-slate-500 flex-shrink-0">{item.label}</dt>
-                    <dd className="text-white text-right">{item.value}</dd>
+                    <dt className="text-brand-text-sec uppercase tracking-[0.5px] flex-shrink-0">{item.label}</dt>
+                    <dd className="text-white text-right font-light">{item.value}</dd>
                   </div>
                 ))}
               </dl>
 
               <div className="flex gap-3">
-                <button
+                <Button
                   onClick={() => setShowSummary(false)}
-                  className="flex-1 py-3 text-sm font-semibold text-slate-300 border border-white/10 rounded-xl hover:bg-white/5 transition-all"
+                  variant="secondary"
+                  className="flex-1"
                 >
                   Edit
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={onConfirm}
                   disabled={isSubmitting}
-                  className="flex-1 py-3 text-sm font-bold text-[#0F172A] bg-[#D4AF37] hover:bg-[#F0D060] rounded-xl transition-all disabled:opacity-60"
+                  variant="primary"
+                  className="flex-1"
                 >
-                  {isSubmitting ? "Sending..." : "Confirm & WhatsApp"}
-                </button>
+                  {isSubmitting ? "Sending..." : "Confirm"}
+                </Button>
               </div>
             </motion.div>
           </motion.div>

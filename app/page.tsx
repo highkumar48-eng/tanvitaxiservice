@@ -1,33 +1,25 @@
 import HeroSection from "@/components/home/HeroSection";
-import WhyChooseUs from "@/components/home/WhyChooseUs";
+import AboutPreview from "@/components/home/AboutPreview";
 import Services from "@/components/home/Services";
 import Fleet from "@/components/home/Fleet";
-import BookingForm from "@/components/home/BookingForm";
-import FareCalculator from "@/components/home/FareCalculator";
-import Testimonials from "@/components/home/Testimonials";
-import FAQ from "@/components/home/FAQ";
-import Gallery from "@/components/home/Gallery";
-import Contact from "@/components/home/Contact";
-import QRPayment from "@/components/home/QRPayment";
 import TourPackages from "@/components/home/TourPackages";
 import Destinations from "@/components/home/Destinations";
+import WhyChooseUs from "@/components/home/WhyChooseUs";
+import Testimonials from "@/components/home/Testimonials";
+import CTABanner from "@/components/home/CTABanner";
 
 export default function HomePage() {
   return (
     <>
       <HeroSection />
-      <TourPackages />
-      <Services />
+      <AboutPreview />
+      <Services limit={4} showViewAll={true} />
+      <Fleet limit={4} showViewAll={true} />
+      <TourPackages limit={3} showViewAll={true} />
       <Destinations />
-      <Fleet />
-      <BookingForm />
-      <FareCalculator />
       <WhyChooseUs />
       <Testimonials />
-      <FAQ />
-      <Gallery />
-      <Contact />
-      <QRPayment />
+      <CTABanner />
     </>
   );
 }

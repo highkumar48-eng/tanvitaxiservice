@@ -22,23 +22,23 @@ export default function SectionHeader({
 }: SectionHeaderProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className={cn(centered && "text-center", className)}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className={cn("flex flex-col", centered ? "items-center text-center" : "items-start text-left", className)}
     >
       {badge && (
-        <span className="inline-block mb-4 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#D4AF37] bg-[#D4AF37]/10 border border-[#D4AF37]/20 rounded-full">
+        <span className="inline-block mb-4 px-3.5 py-1.5 text-xs font-bold uppercase tracking-[1.5px] text-brand-blue border border-brand-border bg-brand-bg-sec rounded-none">
           {badge}
         </span>
       )}
-      <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight mb-4">
+      <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-none tracking-tight uppercase mb-4">
         {title}{" "}
-        {highlight && <span className="text-gradient-gold">{highlight}</span>}
+        {highlight && <span className="text-brand-blue">{highlight}</span>}
       </h2>
       {subtitle && (
-        <p className={cn("text-base sm:text-lg text-slate-400 leading-relaxed", centered && "max-w-2xl mx-auto")}>
+        <p className={cn("text-base text-brand-text-sec font-light leading-relaxed mt-2", centered && "max-w-2xl mx-auto")}>
           {subtitle}
         </p>
       )}

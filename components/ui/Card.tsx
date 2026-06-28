@@ -9,10 +9,10 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const variantClasses = {
-  glass: "glass",
-  "glass-dark": "glass-dark",
-  "glass-gold": "glass-gold",
-  solid: "bg-brand-surface border border-brand-border",
+  glass: "bg-brand-card border border-brand-border",
+  "glass-dark": "bg-brand-bg-sec border border-brand-border",
+  "glass-gold": "bg-brand-card border border-brand-blue/30",
+  solid: "bg-brand-card border border-brand-border",
   outline: "border border-brand-border bg-transparent",
 };
 
@@ -34,10 +34,10 @@ export function Card({
   return (
     <div
       className={cn(
-        "rounded-2xl",
+        "rounded-xl transition-all duration-300",
         variantClasses[variant],
         paddingClasses[padding],
-        hover && "card-hover border-gold-glow cursor-pointer",
+        hover && "hover:border-brand-blue cursor-pointer",
         className
       )}
       {...props}
@@ -65,7 +65,7 @@ export function CardTitle({
   ...props
 }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h3 className={cn("text-lg font-semibold text-white", className)} {...props}>
+    <h3 className={cn("text-lg font-bold text-white tracking-wide uppercase", className)} {...props}>
       {children}
     </h3>
   );
@@ -77,7 +77,7 @@ export function CardBody({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn("text-slate-400 text-sm leading-relaxed", className)} {...props}>
+    <div className={cn("text-brand-text-sec text-sm font-light leading-relaxed", className)} {...props}>
       {children}
     </div>
   );

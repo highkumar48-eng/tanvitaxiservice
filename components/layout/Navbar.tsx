@@ -4,11 +4,10 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, ChevronDown, Car } from "lucide-react";
+import { Menu, X, Phone, ChevronDown, Car, Sun, Moon } from "lucide-react";
 import { BUSINESS, CALL_URL, NAV_LINKS, WHATSAPP_PREFILL } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-// ── WhatsApp icon ────────────────────────────────────────────────────────
 function WAIcon({ size = 16 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
@@ -17,7 +16,6 @@ function WAIcon({ size = 16 }: { size?: number }) {
   );
 }
 
-// ── Dropdown menu ────────────────────────────────────────────────────────
 interface DropdownProps {
   items: { label: string; href: string }[];
   onClose?: () => void;
@@ -25,14 +23,14 @@ interface DropdownProps {
 
 function DropdownMenu({ items, onClose }: DropdownProps) {
   return (
-    <div className="absolute top-full left-0 pt-1 z-50 min-w-[210px]">
-      <div className="bg-white border border-[#E2E8F0] rounded-xl shadow-lg overflow-hidden py-1">
+    <div className="absolute top-full left-0 pt-1 z-50 min-w-[240px]">
+      <div className="bg-[#101826] border border-brand-border rounded-none shadow-2xl py-1">
         {items.map((item) => (
           <Link
             key={item.label}
             href={item.href}
             onClick={onClose}
-            className="block px-4 py-2.5 text-sm text-[#475569] hover:text-[#1B4FD8] hover:bg-[#F8FAFC] transition-colors duration-150"
+            className="block px-5 py-3 text-xs uppercase tracking-[1px] font-bold text-brand-text-sec hover:text-white hover:bg-brand-card transition-colors duration-150"
           >
             {item.label}
           </Link>
@@ -47,8 +45,30 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [theme, setTheme] = useState("dark");
   const pathname = usePathname();
   const navRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    setTheme(savedTheme);
+    if (savedTheme === "light") {
+      document.documentElement.classList.add("light-theme");
+    } else {
+      document.documentElement.classList.remove("light-theme");
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+    localStorage.setItem("theme", nextTheme);
+    if (nextTheme === "light") {
+      document.documentElement.classList.add("light-theme");
+    } else {
+      document.documentElement.classList.remove("light-theme");
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -89,21 +109,21 @@ export default function Navbar() {
   return (
     <>
       {/* ── Top Utility Bar ─────────────────────────────────────────── */}
-      <div className="bg-[#0D1B3E] text-white text-xs py-2 hidden md:block">
+      <div className="bg-[#081423] text-brand-text-sec text-[11px] py-2 border-b border-brand-border hidden md:block">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          <p className="text-[#94A3B8]">
-            Serving <span className="text-white">Gurugram · Delhi · Noida · Faridabad</span> and beyond
+          <p className="tracking-wide">
+            SERVERS FOR <span className="text-white">GURUGRAM · DELHI · NOIDA · FARIDABAD</span>
           </p>
           <div className="flex items-center gap-6">
-            <span className="flex items-center gap-1.5 text-[#94A3B8]">
-              <span className="inline-block w-2 h-2 rounded-full bg-[#16A34A] animate-pulse" />
-              Available 24×7
+            <span className="flex items-center gap-1.5 font-semibold text-brand-text-sec uppercase tracking-widest">
+              <span className="inline-block w-1.5 h-1.5 bg-brand-green animate-pulse" />
+              AVAILABLE 24×7
             </span>
             <a
               href={CALL_URL}
-              className="flex items-center gap-1.5 text-white hover:text-[#2563EB] transition-colors"
+              className="flex items-center gap-1.5 text-white hover:text-brand-blue uppercase tracking-widest font-semibold transition-colors"
             >
-              <Phone size={12} />
+              <Phone size={10} />
               {BUSINESS.phone}
             </a>
           </div>
@@ -113,10 +133,10 @@ export default function Navbar() {
       {/* ── Main Navbar ─────────────────────────────────────────────── */}
       <header
         className={cn(
-          "sticky top-0 left-0 right-0 z-50 transition-all duration-300",
+          "sticky top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#081423]",
           scrolled
-            ? "bg-white border-b border-[#E2E8F0] shadow-sm"
-            : "bg-white border-b border-[#E2E8F0]"
+            ? "border-b border-brand-border/80 shadow-md"
+            : "border-b border-brand-border"
         )}
       >
         <div ref={navRef}>
@@ -128,21 +148,21 @@ export default function Navbar() {
               className="flex items-center gap-2.5 flex-shrink-0 group"
               aria-label={`${BUSINESS.name} — Home`}
             >
-              <div className="w-9 h-9 rounded-lg bg-[#0D1B3E] flex items-center justify-center flex-shrink-0 group-hover:bg-[#1B4FD8] transition-colors duration-200">
-                <Car size={18} className="text-white" />
+              <div className="w-8 h-8 bg-brand-blue flex items-center justify-center flex-shrink-0 transition-colors duration-200">
+                <Car size={16} className="text-white" />
               </div>
               <div className="flex flex-col leading-tight">
-                <span className="text-sm font-bold text-[#0D1B3E] tracking-tight">
+                <span className="text-sm font-black text-white tracking-wide uppercase">
                   Tanvi
                 </span>
-                <span className="text-[10px] font-semibold text-[#1B4FD8] uppercase tracking-widest">
+                <span className="text-[9px] font-bold text-brand-blue uppercase tracking-[1.5px]">
                   Taxi Services
                 </span>
               </div>
             </Link>
 
             {/* ── Desktop Nav Links ── */}
-            <ul className="hidden lg:flex items-center gap-0.5" role="list">
+            <ul className="hidden lg:flex items-center gap-1" role="list">
               {NAV_LINKS.map((link) => (
                 <li key={link.label} className="relative">
                   {link.sublinks ? (
@@ -152,17 +172,17 @@ export default function Navbar() {
                     >
                       <button
                         className={cn(
-                          "flex items-center gap-1 px-3.5 py-2 text-sm font-medium rounded-lg transition-all duration-150",
+                          "flex items-center gap-1 px-3.5 py-2 text-xs font-bold uppercase tracking-[1.5px] transition-all duration-150",
                           openDropdown === link.label || isActive(link.href)
-                            ? "text-[#1B4FD8] bg-[#EFF6FF]"
-                            : "text-[#374151] hover:text-[#1B4FD8] hover:bg-[#F8FAFC]"
+                            ? "text-brand-blue"
+                            : "text-brand-text-sec hover:text-white"
                         )}
                         aria-haspopup="true"
                         aria-expanded={openDropdown === link.label}
                       >
                         {link.label}
                         <ChevronDown
-                          size={13}
+                          size={12}
                           className={cn(
                             "transition-transform duration-200",
                             openDropdown === link.label ? "rotate-180" : ""
@@ -172,10 +192,10 @@ export default function Navbar() {
                       <AnimatePresence>
                         {openDropdown === link.label && (
                           <motion.div
-                            initial={{ opacity: 0, y: -4 }}
+                            initial={{ opacity: 0, y: -2 }}
                             animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -4 }}
-                            transition={{ duration: 0.15 }}
+                            exit={{ opacity: 0, y: -2 }}
+                            transition={{ duration: 0.1 }}
                           >
                             <DropdownMenu
                               items={link.sublinks}
@@ -189,15 +209,15 @@ export default function Navbar() {
                     <Link
                       href={link.href}
                       className={cn(
-                        "px-3.5 py-2 text-sm font-medium rounded-lg transition-all duration-150 relative",
+                        "px-3.5 py-2 text-xs font-bold uppercase tracking-[1.5px] transition-all duration-150 relative",
                         isActive(link.href)
-                          ? "text-[#1B4FD8] bg-[#EFF6FF]"
-                          : "text-[#374151] hover:text-[#1B4FD8] hover:bg-[#F8FAFC]"
+                          ? "text-brand-blue"
+                          : "text-brand-text-sec hover:text-white"
                       )}
                     >
                       {link.label}
                       {isActive(link.href) && (
-                        <span className="absolute bottom-0 left-3.5 right-3.5 h-0.5 bg-[#1B4FD8] rounded-full" />
+                        <span className="absolute bottom-0 left-3.5 right-3.5 h-[2px] bg-brand-blue" />
                       )}
                     </Link>
                   )}
@@ -206,54 +226,48 @@ export default function Navbar() {
             </ul>
 
             {/* ── Desktop CTAs ── */}
-            <div className="hidden lg:flex items-center gap-2.5">
+            <div className="hidden lg:flex items-center gap-3">
+              <button
+                onClick={toggleTheme}
+                className="w-9 h-9 flex items-center justify-center border border-brand-border text-brand-text-sec hover:text-white rounded-lg transition-colors cursor-pointer"
+                aria-label="Toggle Theme"
+              >
+                {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
+              </button>
               <a
                 href={CALL_URL}
-                className="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-[#0D1B3E] border border-[#E2E8F0] rounded-lg hover:border-[#1B4FD8] hover:text-[#1B4FD8] transition-all duration-200"
+                className="flex items-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-[1.5px] text-white border border-brand-border hover:border-brand-blue transition-all duration-200"
               >
-                <Phone size={14} />
+                <Phone size={11} />
                 Call Now
               </a>
               <Link
                 href="/booking"
-                className="flex items-center gap-2 px-5 py-2 text-sm font-bold text-white bg-[#16A34A] rounded-lg hover:bg-[#15803D] transition-all duration-200 shadow-sm"
+                className="flex items-center gap-2 px-5 py-2.5 text-xs font-bold uppercase tracking-[1.5px] text-white bg-brand-blue hover:bg-blue-600 transition-all duration-200"
               >
-                Book a Cab
+                Book Now
               </Link>
             </div>
 
-            {/* ── Mobile Hamburger ── */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg text-[#374151] hover:text-[#1B4FD8] hover:bg-[#F8FAFC] transition-all duration-200"
-              aria-label={isOpen ? "Close menu" : "Open menu"}
-              aria-expanded={isOpen}
-              aria-controls="mobile-menu"
-            >
-              <AnimatePresence mode="wait" initial={false}>
-                {isOpen ? (
-                  <motion.span
-                    key="close"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <X size={22} />
-                  </motion.span>
-                ) : (
-                  <motion.span
-                    key="menu"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <Menu size={22} />
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </button>
+            {/* ── Mobile Actions ── */}
+            <div className="flex items-center gap-2 lg:hidden">
+              <button
+                onClick={toggleTheme}
+                className="w-9 h-9 flex items-center justify-center border border-brand-border text-brand-text-sec hover:text-white rounded-lg transition-colors cursor-pointer"
+                aria-label="Toggle Theme"
+              >
+                {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
+              </button>
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-10 h-10 flex items-center justify-center text-brand-text-sec hover:text-white"
+                aria-label={isOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isOpen}
+                aria-controls="mobile-menu"
+              >
+                {isOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
+            </div>
           </nav>
         </div>
       </header>
@@ -269,7 +283,7 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+              className="fixed inset-0 z-40 bg-black/70 lg:hidden"
               onClick={() => setIsOpen(false)}
               aria-hidden="true"
             />
@@ -281,25 +295,28 @@ export default function Navbar() {
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", stiffness: 300, damping: 32 }}
-              className="fixed top-0 right-0 bottom-0 z-50 w-72 bg-white shadow-2xl flex flex-col overflow-y-auto lg:hidden"
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="fixed top-0 right-0 bottom-0 z-50 w-80 bg-[#081423] border-l border-brand-border flex flex-col overflow-y-auto lg:hidden"
               role="dialog"
               aria-label="Navigation menu"
             >
+              {/* Top Accent Stripe */}
+              <div className="h-1 bg-gradient-to-r from-brand-blue to-brand-green w-full" />
+
               {/* Drawer Header */}
-              <div className="flex items-center justify-between px-5 py-4 border-b border-[#E2E8F0]">
+              <div className="flex items-center justify-between px-5 py-4 border-b border-brand-border">
                 <Link href="/" className="flex items-center gap-2.5" onClick={() => setIsOpen(false)}>
-                  <div className="w-8 h-8 rounded-lg bg-[#0D1B3E] flex items-center justify-center">
+                  <div className="w-8 h-8 bg-brand-blue flex items-center justify-center">
                     <Car size={16} className="text-white" />
                   </div>
                   <div className="flex flex-col leading-tight">
-                    <span className="text-sm font-bold text-[#0D1B3E]">Tanvi</span>
-                    <span className="text-[10px] font-semibold text-[#1B4FD8] uppercase tracking-widest">Taxi Services</span>
+                    <span className="text-sm font-black text-white uppercase tracking-wide">Tanvi</span>
+                    <span className="text-[9px] font-bold text-brand-blue uppercase tracking-[1.5px]">Taxi Services</span>
                   </div>
                 </Link>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="w-8 h-8 flex items-center justify-center text-[#94A3B8] hover:text-[#374151] rounded-lg hover:bg-[#F8FAFC] transition-all"
+                  className="w-8 h-8 flex items-center justify-center text-brand-text-sec hover:text-white"
                   aria-label="Close menu"
                 >
                   <X size={18} />
@@ -307,20 +324,20 @@ export default function Navbar() {
               </div>
 
               {/* Mobile utility info */}
-              <div className="px-5 py-3 bg-[#F8FAFC] border-b border-[#E2E8F0]">
+              <div className="px-5 py-3.5 bg-brand-bg-sec border-b border-brand-border">
                 <a
                   href={CALL_URL}
-                  className="flex items-center gap-2 text-sm font-semibold text-[#0D1B3E]"
+                  className="flex items-center gap-2 text-xs font-bold uppercase tracking-[1.5px] text-white hover:text-brand-blue"
                   onClick={() => setIsOpen(false)}
                 >
-                  <Phone size={14} className="text-[#1B4FD8]" />
+                  <Phone size={12} className="text-brand-blue" />
                   {BUSINESS.phone}
                 </a>
               </div>
 
               {/* Nav Links */}
-              <nav className="flex-1 px-3 py-4" aria-label="Mobile navigation">
-                <ul className="space-y-0.5" role="list">
+              <nav className="flex-1 px-4 py-4" aria-label="Mobile navigation">
+                <ul className="space-y-1" role="list">
                   {NAV_LINKS.map((link) => (
                     <li key={link.label}>
                       {link.sublinks ? (
@@ -332,15 +349,15 @@ export default function Navbar() {
                               )
                             }
                             className={cn(
-                              "flex items-center justify-between w-full px-3.5 py-3 text-sm font-medium rounded-lg transition-all duration-150",
+                              "flex items-center justify-between w-full px-4 py-3 text-xs font-bold uppercase tracking-[1.5px] transition-all duration-150",
                               mobileExpanded === link.label
-                                ? "text-[#1B4FD8] bg-[#EFF6FF]"
-                                : "text-[#374151] hover:text-[#1B4FD8] hover:bg-[#F8FAFC]"
+                                ? "text-brand-blue bg-brand-hover"
+                                : "text-brand-text-sec hover:text-white hover:bg-brand-hover"
                             )}
                           >
                             {link.label}
                             <ChevronDown
-                              size={15}
+                              size={14}
                               className={cn(
                                 "transition-transform duration-200",
                                 mobileExpanded === link.label ? "rotate-180" : ""
@@ -353,16 +370,16 @@ export default function Navbar() {
                                 initial={{ height: 0, opacity: 0 }}
                                 animate={{ height: "auto", opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.2 }}
-                                className="overflow-hidden"
+                                transition={{ duration: 0.15 }}
+                                className="overflow-hidden bg-brand-bg-sec/50"
                               >
-                                <div className="pl-4 py-1 space-y-0.5">
-                                  {link.sublinks.slice(0, 7).map((sub) => (
+                                <div className="pl-4 py-1">
+                                  {link.sublinks.map((sub) => (
                                     <Link
                                       key={sub.label}
                                       href={sub.href}
                                       onClick={() => setIsOpen(false)}
-                                      className="block px-3.5 py-2.5 text-sm text-[#475569] hover:text-[#1B4FD8] hover:bg-[#F8FAFC] rounded-lg transition-colors"
+                                      className="block px-4 py-2.5 text-xs font-semibold uppercase tracking-[1px] text-brand-text-sec hover:text-white hover:bg-brand-hover transition-colors"
                                     >
                                       {sub.label}
                                     </Link>
@@ -377,10 +394,10 @@ export default function Navbar() {
                           href={link.href}
                           onClick={() => setIsOpen(false)}
                           className={cn(
-                            "flex items-center px-3.5 py-3 text-sm font-medium rounded-lg transition-all duration-150",
+                            "flex items-center px-4 py-3 text-xs font-bold uppercase tracking-[1.5px] transition-all duration-150",
                             isActive(link.href)
-                              ? "text-[#1B4FD8] bg-[#EFF6FF]"
-                              : "text-[#374151] hover:text-[#1B4FD8] hover:bg-[#F8FAFC]"
+                              ? "text-brand-blue bg-brand-hover"
+                              : "text-brand-text-sec hover:text-white hover:bg-brand-hover"
                           )}
                         >
                           {link.label}
@@ -392,21 +409,21 @@ export default function Navbar() {
               </nav>
 
               {/* Mobile CTAs */}
-              <div className="px-4 pb-8 space-y-2.5 border-t border-[#E2E8F0] pt-4">
+              <div className="px-5 pb-8 space-y-3 border-t border-brand-border pt-4">
                 <a
                   href={WHATSAPP_PREFILL()}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center gap-2.5 w-full py-3 text-sm font-bold text-white bg-[#25D366] hover:bg-[#1AA44E] rounded-lg transition-all duration-200"
+                  className="flex items-center justify-center gap-2 w-full py-3 text-xs font-bold uppercase tracking-[1.5px] text-white bg-brand-green hover:opacity-90"
                 >
-                  <WAIcon size={16} />
+                  <WAIcon size={14} />
                   WhatsApp Enquiry
                 </a>
                 <Link
                   href="/booking"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center gap-2.5 w-full py-3 text-sm font-bold text-white bg-[#16A34A] hover:bg-[#15803D] rounded-lg transition-all duration-200"
+                  className="flex items-center justify-center gap-2 w-full py-3 text-xs font-bold uppercase tracking-[1.5px] text-white bg-brand-blue hover:bg-blue-600"
                 >
                   Book a Cab
                 </Link>

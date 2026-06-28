@@ -5,13 +5,14 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Users, Briefcase, Wind, IndianRupee, ChevronRight } from "lucide-react";
 import { WHATSAPP_PREFILL } from "@/lib/constants";
+import { Button } from "@/components/ui/Button";
 
 const fleet = [
   {
     id: "sedan",
-    name: "Sedan",
+    name: "Executive Sedan",
     subtitle: "Swift Dzire · Honda City · Etios",
-    image: "/images/fleet_sedan.png",
+    image: "/images/fleet_swift_dzire.png",
     passengers: 4,
     luggage: "2 bags",
     startingFare: "₹12/km",
@@ -21,9 +22,9 @@ const fleet = [
   },
   {
     id: "suv",
-    name: "SUV",
+    name: "Premium SUV",
     subtitle: "Ertiga · Scorpio · XL6",
-    image: "/images/fleet_suv.png",
+    image: "/images/fleet_suzuki_ertiga.png",
     passengers: 6,
     luggage: "4 bags",
     startingFare: "₹16/km",
@@ -35,7 +36,7 @@ const fleet = [
     id: "innova",
     name: "Innova Crysta",
     subtitle: "Toyota Innova Crysta",
-    image: "/images/fleet_innova.png",
+    image: "/images/fleet_innova_crysta.png",
     passengers: 7,
     luggage: "5 bags",
     startingFare: "₹18/km",
@@ -47,7 +48,7 @@ const fleet = [
     id: "tempo",
     name: "Tempo Traveller",
     subtitle: "Force · 12–17 Seater",
-    image: "/images/fleet_tempo.png",
+    image: "/images/fleet_tempo_traveller.png",
     passengers: 17,
     luggage: "Overhead + boot",
     startingFare: "₹28/km",
@@ -62,118 +63,95 @@ interface FleetProps {
   showViewAll?: boolean;
 }
 
-export default function Fleet({ limit = 4, showViewAll = false }: FleetProps) {
+export default function Fleet({ limit = 4, showViewAll = true }: FleetProps) {
   const displayedFleet = fleet.slice(0, limit);
 
   return (
-    <section id="fleet" className="py-16 md:py-20 bg-[#0D1B3E]" aria-label="Our Fleet">
+    <section id="fleet" className="py-24 bg-[#101826]/40 border-b border-brand-border" aria-label="Our Fleet">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
-        <div className="mb-12">
-          <span className="text-xs font-bold text-[#2563EB] uppercase tracking-widest block mb-3">
-            Our Fleet
-          </span>
-          <div className="w-10 h-0.5 bg-[#1B4FD8] mb-5" />
-          <div className="flex items-end justify-between gap-4 flex-wrap">
-            <h2 className="text-2xl md:text-3xl font-bold text-white">
-              Choose Your Perfect Ride
+        <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <div>
+            <span className="text-xs font-bold text-brand-blue uppercase tracking-[2px] block mb-3">
+              Our Fleet
+            </span>
+            <h2 className="text-3xl md:text-4xl font-black text-white uppercase tracking-tight">
+              CHOOSE YOUR PERFECT RIDE
             </h2>
-            {showViewAll && (
-              <Link
-                href="/fleet"
-                className="flex items-center gap-1.5 text-sm font-semibold text-[#2563EB] hover:gap-2.5 transition-all"
-              >
-                View All Vehicles <ChevronRight size={16} />
-              </Link>
-            )}
+            <p className="text-brand-text-sec font-light text-xs sm:text-sm mt-2 max-w-2xl">
+              Clean, well-maintained, and inspected before every trip. All vehicles come with AC and a verified driver.
+            </p>
           </div>
-          <p className="text-[#94A3B8] mt-2 max-w-2xl">
-            Clean, well-maintained, and inspected before every trip. All vehicles come with AC and a verified driver.
-          </p>
+          {showViewAll && (
+            <Link href="/fleet" className="flex-shrink-0">
+              <Button variant="secondary" className="gap-2">
+                View Fleet Details <ChevronRight size={14} />
+              </Button>
+            </Link>
+          )}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {displayedFleet.map((vehicle, i) => (
             <motion.div
               key={vehicle.id}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-20px" }}
-              transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" }}
-              className={`group relative flex flex-col rounded-xl overflow-hidden border transition-all duration-200 hover:-translate-y-1 ${
-                vehicle.featured
-                  ? "border-[#1B4FD8]/50 bg-[#0F1E45]"
-                  : "border-[#1E3264] bg-[#162040] hover:border-[#1B4FD8]/30"
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.05, ease: "easeOut" }}
+              className={`group relative flex flex-col rounded-xl overflow-hidden border transition-all duration-350 bg-brand-card hover:border-brand-blue ${
+                vehicle.featured ? "border-brand-blue/60" : "border-brand-border"
               }`}
             >
               {vehicle.featured && (
-                <div className="absolute top-3 right-3 z-10 px-2.5 py-1 bg-[#1B4FD8] text-white text-[10px] font-bold uppercase rounded-full tracking-wider">
-                  Most Popular
+                <div className="absolute top-3 right-3 z-10 px-2.5 py-1 bg-brand-blue text-white text-[9px] font-bold uppercase tracking-wider">
+                  Popular
                 </div>
               )}
 
               {/* Vehicle image */}
-              <div className="relative h-44 bg-[#0D1B3E] overflow-hidden">
+              <div className="relative h-48 bg-[#081423] overflow-hidden">
                 <Image
                   src={vehicle.image}
                   alt={`${vehicle.name} — Tanvi Taxi Services`}
                   fill
-                  className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+                  className="object-cover grayscale hover:grayscale-0 transition-all duration-700"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
               </div>
 
               {/* Content */}
               <div className="flex flex-col flex-1 p-5">
-                <p className="text-[10px] text-[#64748B] mb-0.5 uppercase tracking-wider">{vehicle.subtitle}</p>
-                <h3 className="text-lg font-bold text-white mb-2">{vehicle.name}</h3>
-                <p className="text-sm text-[#94A3B8] leading-relaxed mb-4 flex-1">{vehicle.description}</p>
+                <p className="text-[9px] font-bold text-brand-text-sec mb-1 uppercase tracking-wider">{vehicle.subtitle}</p>
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-2">{vehicle.name}</h3>
+                <p className="text-xs text-brand-text-sec font-light leading-relaxed mb-4 flex-1">{vehicle.description}</p>
 
                 {/* Specs */}
-                <div className="grid grid-cols-2 gap-2 mb-4">
-                  <div className="flex items-center gap-1.5 text-xs text-[#94A3B8]">
-                    <Users size={12} className="text-[#2563EB] flex-shrink-0" />
-                    {vehicle.passengers} Seats
+                <div className="grid grid-cols-2 gap-2 mb-6">
+                  <div className="flex items-center gap-1.5 text-xs text-brand-text-sec">
+                    <Users size={12} className="text-brand-blue flex-shrink-0" />
+                    <span className="font-light">{vehicle.passengers} Seats</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-xs text-[#94A3B8]">
-                    <Briefcase size={12} className="text-[#2563EB] flex-shrink-0" />
-                    {vehicle.luggage}
+                  <div className="flex items-center gap-1.5 text-xs text-brand-text-sec">
+                    <Briefcase size={12} className="text-brand-blue flex-shrink-0" />
+                    <span className="font-light truncate">{vehicle.luggage}</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-xs text-[#94A3B8]">
-                    <Wind size={12} className="text-[#2563EB] flex-shrink-0" />
-                    Air Conditioned
+                  <div className="flex items-center gap-1.5 text-xs text-brand-text-sec">
+                    <Wind size={12} className="text-brand-blue flex-shrink-0" />
+                    <span className="font-light">AC Cabin</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-xs text-[#94A3B8]">
-                    <IndianRupee size={12} className="text-[#2563EB] flex-shrink-0" />
-                    From {vehicle.startingFare}
+                  <div className="flex items-center gap-1.5 text-xs text-brand-text-sec">
+                    <IndianRupee size={12} className="text-brand-blue flex-shrink-0" />
+                    <span className="font-light">{vehicle.startingFare}</span>
                   </div>
-                </div>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-1.5 mb-4">
-                  {vehicle.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-0.5 text-[10px] font-medium text-[#94A3B8] bg-white/5 border border-[#1E3264] rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
                 </div>
 
                 {/* CTA */}
-                <a
-                  href={WHATSAPP_PREFILL()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`mt-auto w-full text-center py-2.5 rounded-lg text-sm font-bold transition-all duration-200 active:scale-95 ${
-                    vehicle.featured
-                      ? "bg-[#1B4FD8] hover:bg-[#1338A8] text-white"
-                      : "bg-white/8 hover:bg-white/15 text-white border border-[#1E3264] hover:border-[#1B4FD8]/40"
-                  }`}
-                >
-                  Book This Vehicle
+                <a href={WHATSAPP_PREFILL()} target="_blank" rel="noopener noreferrer" className="mt-auto">
+                  <Button variant={vehicle.featured ? "primary" : "secondary"} fullWidth size="sm">
+                    Book Ride
+                  </Button>
                 </a>
               </div>
             </motion.div>

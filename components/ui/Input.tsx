@@ -34,11 +34,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="text-sm font-medium text-slate-300"
+            className="text-xs font-semibold text-brand-text-sec uppercase tracking-wider flex items-center gap-1.5"
           >
             {label}
             {props.required && (
-              <span className="text-red-400 ml-1" aria-hidden="true">
+              <span className="text-red-400 ml-0.5" aria-hidden="true">
                 *
               </span>
             )}
@@ -47,7 +47,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <div className="relative flex items-center">
           {leftIcon && (
             <span
-              className="absolute left-3 text-slate-500 pointer-events-none"
+              className="absolute left-3.5 text-brand-text-sec/50 pointer-events-none"
               aria-hidden="true"
             >
               {leftIcon}
@@ -65,12 +65,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 : undefined
             }
             className={cn(
-              "w-full px-4 py-3 bg-slate-800 border rounded-xl text-white placeholder-slate-500 text-sm",
-              "transition-colors duration-200",
-              "focus:outline-none focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold/50",
+              "w-full px-4 py-3.5 bg-brand-card border text-white placeholder-slate-500 text-sm rounded-none",
+              "transition-all duration-200",
+              "focus:outline-none focus:ring-1 focus:ring-brand-blue focus:border-brand-blue",
               error
                 ? "border-red-500 focus:ring-red-500/30 focus:border-red-500"
-                : "border-slate-700 hover:border-slate-600",
+                : "border-brand-border hover:border-brand-text-sec/30",
               leftIcon && "pl-10",
               rightIcon && "pr-10",
               className
@@ -79,7 +79,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           />
           {rightIcon && (
             <span
-              className="absolute right-3 text-slate-500 pointer-events-none"
+              className="absolute right-3.5 text-brand-text-sec/50 pointer-events-none"
               aria-hidden="true"
             >
               {rightIcon}
@@ -90,13 +90,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <p
             id={`${inputId}-error`}
             role="alert"
-            className="text-xs text-red-400 flex items-center gap-1"
+            className="text-xs text-red-400 flex items-center gap-1 mt-0.5"
           >
             {error}
           </p>
         )}
         {hint && !error && (
-          <p id={`${inputId}-hint`} className="text-xs text-slate-500">
+          <p id={`${inputId}-hint`} className="text-xs text-brand-text-sec/50 mt-0.5">
             {hint}
           </p>
         )}

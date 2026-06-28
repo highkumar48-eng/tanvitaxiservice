@@ -171,7 +171,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       </head>
-      <body className={`${inter.className} bg-brand-dark text-white antialiased`}>
+      <body className={`${inter.className} bg-brand-bg text-white antialiased`}>
         {/* Skip to main content */}
         <a href="#main-content" className="skip-link">
           Skip to main content
@@ -191,16 +191,16 @@ export default function RootLayout({
           position="top-right"
           toastOptions={{
             style: {
-              background: "#1E293B",
+              background: "#141D2B",
               color: "#fff",
-              border: "1px solid #334155",
-              borderRadius: "12px",
+              border: "1px solid rgba(255, 255, 255, 0.08)",
+              borderRadius: "0px",
               fontSize: "14px",
             },
             success: {
               iconTheme: {
-                primary: "#D4AF37",
-                secondary: "#1E293B",
+                primary: "#12B76A",
+                secondary: "#141D2B",
               },
             },
           }}

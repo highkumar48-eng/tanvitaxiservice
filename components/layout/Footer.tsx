@@ -1,5 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import { Phone, Mail, MapPin, Car } from "lucide-react";
+import { Phone, Mail, MapPin, Car, Copy, Check, Map } from "lucide-react";
 import { BUSINESS, CALL_URL, NAV_LINKS, SOCIAL, WHATSAPP_PREFILL } from "@/lib/constants";
 
 const serviceLinks = [
@@ -22,45 +25,53 @@ function WAIcon({ className }: { className?: string }) {
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
+
+  const copyToClipboard = (text: string, key: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey(null), 2000);
+  };
 
   return (
-    <footer className="bg-[#080F23] border-t border-[#1E3264]" role="contentinfo">
+    <footer className="bg-[#081423] border-t border-brand-border text-brand-text-sec" role="contentinfo">
+      {/* Accent Line */}
+      <div className="h-1 bg-gradient-to-r from-brand-blue to-brand-green w-full" />
 
       {/* Main footer */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
 
           {/* Column 1: Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link
               href="/"
-              className="inline-flex items-center gap-2.5 mb-5 group"
+              className="inline-flex items-center gap-2.5 mb-6 group"
               aria-label={`${BUSINESS.name} — Home`}
             >
-              <div className="w-9 h-9 rounded-lg bg-[#1B4FD8] flex items-center justify-center group-hover:bg-[#2563EB] transition-colors">
-                <Car size={18} className="text-white" />
+              <div className="w-8 h-8 bg-brand-blue flex items-center justify-center rounded-lg">
+                <Car size={16} className="text-white" />
               </div>
               <div className="flex flex-col leading-tight">
-                <span className="text-sm font-bold text-white">Tanvi</span>
-                <span className="text-[10px] font-semibold text-[#2563EB] uppercase tracking-widest">
+                <span className="text-sm font-black text-white uppercase tracking-wide">Tanvi</span>
+                <span className="text-[9px] font-bold text-brand-blue uppercase tracking-[1.5px]">
                   Taxi Services
                 </span>
               </div>
             </Link>
 
-            <p className="text-sm text-[#64748B] leading-relaxed mb-5 max-w-xs">
-              Professional taxi and travel services in Gurugram &amp; Delhi NCR. Available 24×7
-              for airport transfers, outstation trips, corporate travel and tours.
+            <p className="text-xs font-light text-brand-text-sec leading-relaxed mb-6 max-w-xs">
+              Premium corporate taxi and travel agency. Serving Delhi NCR with verified chauffeurs since 2012. Providing safe, transparently priced journeys daily.
             </p>
 
             {/* Availability badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0F1E45] border border-[#1E3264] rounded-lg mb-5">
-              <span className="w-2 h-2 rounded-full bg-[#16A34A] animate-pulse" />
-              <span className="text-xs text-[#94A3B8] font-medium">Available 24×7</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-card border border-brand-border mb-6 rounded-lg">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-green animate-pulse" />
+              <span className="text-[10px] text-brand-text-sec font-bold uppercase tracking-widest">Available 24×7</span>
             </div>
 
             {/* Social */}
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2">
               {[
                 {
                   href: SOCIAL.facebook,
@@ -96,7 +107,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="w-8 h-8 rounded-lg bg-[#0F1E45] border border-[#1E3264] flex items-center justify-center text-[#64748B] hover:text-white hover:bg-[#1B4FD8] hover:border-[#1B4FD8] transition-all duration-200"
+                  className="w-8 h-8 bg-brand-card border border-brand-border flex items-center justify-center text-brand-text-sec hover:text-white hover:border-brand-blue hover:bg-brand-hover rounded-lg transition-all duration-200"
                 >
                   {icon}
                 </a>
@@ -106,55 +117,37 @@ export default function Footer() {
 
           {/* Column 2: Quick Links */}
           <div>
-            <h3 className="text-xs font-bold text-white uppercase tracking-widest mb-5">
+            <h3 className="text-xs font-bold text-white uppercase tracking-[1.5px] mb-6">
               Quick Links
             </h3>
-            <ul className="space-y-2.5" role="list">
+            <ul className="space-y-3" role="list">
               {NAV_LINKS.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[#64748B] hover:text-white transition-colors duration-150 flex items-center gap-2 group"
+                    className="text-xs font-medium uppercase tracking-[0.5px] text-brand-text-sec hover:text-white transition-colors duration-150 flex items-center gap-2 group"
                   >
-                    <span className="w-1 h-1 rounded-full bg-[#1E3264] group-hover:bg-[#1B4FD8] transition-colors" />
+                    <span className="w-1 h-1 bg-brand-border group-hover:bg-brand-blue transition-colors" />
                     {link.label}
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link
-                  href="/booking"
-                  className="text-sm text-[#64748B] hover:text-white transition-colors duration-150 flex items-center gap-2 group"
-                >
-                  <span className="w-1 h-1 rounded-full bg-[#1E3264] group-hover:bg-[#1B4FD8] transition-colors" />
-                  Book a Cab
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/faq"
-                  className="text-sm text-[#64748B] hover:text-white transition-colors duration-150 flex items-center gap-2 group"
-                >
-                  <span className="w-1 h-1 rounded-full bg-[#1E3264] group-hover:bg-[#1B4FD8] transition-colors" />
-                  FAQ
-                </Link>
-              </li>
             </ul>
           </div>
 
           {/* Column 3: Services */}
           <div>
-            <h3 className="text-xs font-bold text-white uppercase tracking-widest mb-5">
+            <h3 className="text-xs font-bold text-white uppercase tracking-[1.5px] mb-6">
               Our Services
             </h3>
-            <ul className="space-y-2.5" role="list">
+            <ul className="space-y-3" role="list">
               {serviceLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[#64748B] hover:text-white transition-colors duration-150 flex items-center gap-2 group"
+                    className="text-xs font-medium uppercase tracking-[0.5px] text-brand-text-sec hover:text-white transition-colors duration-150 flex items-center gap-2 group"
                   >
-                    <span className="w-1 h-1 rounded-full bg-[#1E3264] group-hover:bg-[#1B4FD8] transition-colors" />
+                    <span className="w-1 h-1 bg-brand-border group-hover:bg-brand-blue transition-colors" />
                     {link.label}
                   </Link>
                 </li>
@@ -164,73 +157,89 @@ export default function Footer() {
 
           {/* Column 4: Contact */}
           <div>
-            <h3 className="text-xs font-bold text-white uppercase tracking-widest mb-5">
-              Contact Us
+            <h3 className="text-xs font-bold text-white uppercase tracking-[1.5px] mb-6">
+              Contact &amp; Payment
             </h3>
-            <ul className="space-y-4 mb-5" role="list">
-              <li>
+            <ul className="space-y-4 mb-6" role="list">
+              <li className="flex items-center justify-between gap-2 border-b border-brand-border/40 pb-2">
                 <a
                   href={CALL_URL}
-                  className="flex items-start gap-3 text-sm text-[#64748B] hover:text-white transition-colors group"
+                  className="flex items-start gap-3 text-xs font-light text-brand-text-sec hover:text-white transition-colors group"
                 >
-                  <Phone size={14} className="mt-0.5 flex-shrink-0 text-[#1B4FD8]" />
+                  <Phone size={14} className="mt-0.5 flex-shrink-0 text-brand-blue" />
                   <span>{BUSINESS.phone}</span>
                 </a>
+                <button
+                  onClick={() => copyToClipboard(BUSINESS.phone, "phone")}
+                  className="p-1 hover:text-white text-slate-500 transition-colors"
+                  title="Copy Phone"
+                >
+                  {copiedKey === "phone" ? <Check size={12} className="text-brand-green" /> : <Copy size={12} />}
+                </button>
               </li>
-              <li>
+
+              <li className="flex items-center justify-between gap-2 border-b border-brand-border/40 pb-2">
                 <a
                   href={WHATSAPP_PREFILL()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-start gap-3 text-sm text-[#64748B] hover:text-[#25D366] transition-colors group"
+                  className="flex items-start gap-3 text-xs font-light text-brand-text-sec hover:text-brand-green transition-colors group"
                 >
-                  <WAIcon className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-[#25D366]" />
+                  <WAIcon className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-brand-green" />
                   <span>WhatsApp Enquiry</span>
                 </a>
               </li>
-              <li>
-                <a
-                  href={`mailto:${BUSINESS.email}`}
-                  className="flex items-start gap-3 text-sm text-[#64748B] hover:text-white transition-colors"
-                >
-                  <Mail size={14} className="mt-0.5 flex-shrink-0 text-[#1B4FD8]" />
+
+              <li className="flex items-center justify-between gap-2 border-b border-brand-border/40 pb-2">
+                <div className="flex items-center gap-3 text-xs font-light text-brand-text-sec">
+                  <Mail size={14} className="flex-shrink-0 text-brand-blue" />
                   <span className="break-all">{BUSINESS.email}</span>
-                </a>
-              </li>
-              <li>
-                <div className="flex items-start gap-3 text-sm text-[#64748B]">
-                  <MapPin size={14} className="mt-0.5 flex-shrink-0 text-[#1B4FD8]" />
-                  <span>{BUSINESS.address}, {BUSINESS.state} — {BUSINESS.pincode}</span>
                 </div>
               </li>
-            </ul>
 
-            {/* Map */}
-            <div className="rounded-lg overflow-hidden border border-[#1E3264] h-32">
-              <iframe
-                src={BUSINESS.mapEmbedUrl}
-                width="100%"
-                height="100%"
-                style={{ border: 0, filter: "invert(90%) hue-rotate(180deg)" }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Tanvi Taxi Services Location"
-              />
-            </div>
+              <li className="flex items-center justify-between gap-2 border-b border-brand-border/40 pb-2">
+                <a
+                  href="https://maps.google.com/?q=Gurugram+Haryana+India"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-3 text-xs font-light text-brand-text-sec hover:text-white transition-colors"
+                >
+                  <MapPin size={14} className="mt-0.5 flex-shrink-0 text-brand-blue" />
+                  <span>{BUSINESS.address}</span>
+                </a>
+                <button
+                  onClick={() => copyToClipboard(BUSINESS.address, "addr")}
+                  className="p-1 hover:text-white text-slate-500 transition-colors"
+                  title="Copy Address"
+                >
+                  {copiedKey === "addr" ? <Check size={12} className="text-brand-green" /> : <Copy size={12} />}
+                </button>
+              </li>
+
+              <li className="flex items-center justify-between gap-2 border-b border-brand-border/40 pb-2">
+                <div className="flex items-start gap-3 text-xs font-light text-brand-text-sec">
+                  <span className="text-[10px] font-bold text-brand-blue tracking-wider mt-0.5">UPI</span>
+                  <span>{BUSINESS.upiId}</span>
+                </div>
+                <button
+                  onClick={() => copyToClipboard(BUSINESS.upiId, "upi")}
+                  className="p-1 hover:text-white text-slate-500 transition-colors"
+                  title="Copy UPI"
+                >
+                  {copiedKey === "upi" ? <Check size={12} className="text-brand-green" /> : <Copy size={12} />}
+                </button>
+              </li>
+            </ul>
           </div>
         </div>
-      </div>
 
-      {/* Bottom bar */}
-      <div className="border-t border-[#1E3264]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-[#475569]">
-            © {currentYear} {BUSINESS.name}. All rights reserved.
+        {/* Bottom bar */}
+        <div className="border-t border-brand-border mt-12 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-[11px] font-light text-brand-text-sec text-center md:text-left">
+            &copy; {currentYear} {BUSINESS.name}. All Rights Reserved. GSTIN: {BUSINESS.gst}
           </p>
-          <p className="text-xs text-[#475569]">
-            Serving{" "}
-            <span className="text-[#2563EB]">Gurugram · Delhi · Noida · Faridabad · Ghaziabad</span>
+          <p className="text-[11px] font-light text-brand-text-sec/60 text-center md:text-right">
+            Premium Taxi &amp; Tour Travel Operator. Serving NCR since 2012.
           </p>
         </div>
       </div>
