@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { COMPANY, NAV_LINKS } from "@/lib/constants";
-import { Phone, Clock, Star, Moon, Sun, Menu, X, Car, ChevronDown } from "lucide-react";
+import { Phone, Clock, Star, Moon, Sun, Menu, X, ChevronDown } from "lucide-react";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -59,21 +60,19 @@ export default function Header() {
       <div className="bg-white dark:bg-[#1e293b] py-4 px-4 transition-colors">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="bg-[#22c55e] p-2 rounded-lg text-white">
-              <Car size={28} />
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-[#22c55e] bg-white">
+              <Image src="/images/logo.png" alt="Tanvi Taxi Services Logo" fill className="object-cover" />
             </div>
-            <div>
-              <h1 className="font-heading font-bold text-xl md:text-2xl text-[#1a1a2e] dark:text-white leading-tight">
+            <div className="flex flex-col">
+              <span className="font-heading font-bold text-xl md:text-2xl text-[#1a1a2e] dark:text-white leading-tight group-hover:text-[#22c55e] transition-colors">
                 {COMPANY.name}
-              </h1>
+              </span>
+              <span className="text-xs font-semibold text-[#22c55e] tracking-wider uppercase hidden sm:block">
+                {COMPANY.tagline}
+              </span>
             </div>
           </Link>
-
-          {/* Tagline (Desktop) */}
-          <div className="hidden lg:block text-sm text-gray-600 dark:text-gray-400 font-medium">
-            Safe • Reliable • Affordable | Delhi NCR's Trusted Taxi
-          </div>
 
           {/* Actions */}
           <div className="flex items-center gap-4">
@@ -146,8 +145,8 @@ export default function Header() {
         <div className="fixed inset-0 bg-[#0a1628] z-[100] flex flex-col p-6 animate-fade-in lg:hidden overflow-y-auto">
           <div className="flex justify-between items-center mb-8 text-white">
             <div className="flex items-center gap-2">
-              <div className="bg-[#22c55e] p-2 rounded-lg">
-                <Car size={24} />
+              <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-[#22c55e] bg-white">
+                <Image src="/images/logo.png" alt="Tanvi Taxi Services Logo" fill className="object-cover" />
               </div>
               <span className="font-heading font-bold text-xl">{COMPANY.name}</span>
             </div>

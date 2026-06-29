@@ -2,6 +2,8 @@
 
 @import "tailwindcss";
 
+@custom-variant dark (&:is([data-theme="dark"] *));
+
 @theme {
   --color-primary-navy: #0a1628;
   --color-primary-green: #22c55e;
@@ -85,6 +87,7 @@ h1, h2, h3, h4, h5, h6 {
 .card-white {
   background-color: var(--card-bg);
   border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 1.5rem;
   transition: all 0.2s ease-in-out;
 }
 

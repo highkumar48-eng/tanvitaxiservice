@@ -1,11 +1,11 @@
 export const COMPANY = {
   name: "Tanvi Taxi Services",
-  phone: "+91-XXXXXXXXXX",
-  whatsapp: "91XXXXXXXXXX",
+  phone: "+91-9650277624",
+  whatsapp: "919650277624",
   email: "tanvitaxiservices@gmail.com",
-  address: "[Office Address, Gurugram, Haryana]",
+  address: "Shop No. 1, Gali No. 1, Ambedkar Colony, Bijwasan, Delhi - 110061",
   since: "2012",
-  tagline: "Safe • Reliable • Affordable",
+  tagline: "Car Rental & Tourist Services",
   website: "https://tanvitaxiservices.com"
 };
 
