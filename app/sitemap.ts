@@ -1,8 +1,8 @@
 import { MetadataRoute } from "next";
-import { BUSINESS } from "@/lib/constants";
+import { COMPANY } from "@/lib/constants";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = BUSINESS.website;
+  const base = COMPANY.website;
   const now = new Date();
 
   return [

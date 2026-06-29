@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { BUSINESS } from "@/lib/constants";
+import { COMPANY } from "@/lib/constants";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -10,7 +10,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/", "/_next/"],
       },
     ],
-    sitemap: `${BUSINESS.website}/sitemap.xml`,
-    host: BUSINESS.website,
+    sitemap: `${COMPANY.website}/sitemap.xml`,
+    host: COMPANY.website,
   };
 }

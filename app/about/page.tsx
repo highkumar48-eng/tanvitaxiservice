@@ -1,154 +1,97 @@
-"use client";
-
 import Image from "next/image";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { Shield, Users, Clock, Award, CheckCircle } from "lucide-react";
-import SectionHeader from "@/components/ui/SectionHeader";
-import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-import { BUSINESS } from "@/lib/constants";
+import { ShieldCheck, Car, Map, Navigation, PhoneCall, HeartPulse } from "lucide-react";
+import ContactCTABand from "@/components/home/ContactCTABand";
+
+export const metadata = {
+  title: "About Us | Tanvi Taxi Services",
+  description: "Learn about Tanvi Taxi Services, our history, mission, and what makes us the best taxi service in Delhi NCR.",
+};
 
 export default function AboutPage() {
+  const differences = [
+    { icon: <ShieldCheck size={32} />, title: "Professional Drivers", text: "Background verified, courteous, and highly experienced." },
+    { icon: <Car size={32} />, title: "Verified Fleet", text: "Well-maintained, clean, and AC-equipped vehicles." },
+    { icon: <Map size={32} />, title: "Route Experts", text: "Drivers knowledgeable about local and outstation routes." },
+    { icon: <Navigation size={32} />, title: "GPS Tracked", text: "Real-time monitoring for your safety and security." },
+    { icon: <PhoneCall size={32} />, title: "24×7 Support", text: "Round the clock customer service assistance." },
+    { icon: <HeartPulse size={32} />, title: "First Aid Ready", text: "All cabs equipped with emergency first aid kits." },
+  ];
+
   return (
-    <div className="bg-[#081423] min-h-screen text-white pt-8">
-      {/* Editorial Hero Band */}
-      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden border-b border-brand-border">
-        <div className="absolute inset-0 bg-black/60 z-10" />
-        <Image
-          src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=1600"
-          alt="Premium Travel & Taxi Services"
-          fill
-          priority
-          className="object-cover object-center"
-        />
-        <div className="relative z-20 max-w-5xl mx-auto px-4 text-center">
-          <span className="text-xs font-bold uppercase tracking-[2px] text-brand-blue mb-4 inline-block">
-            Est. 2018
-          </span>
-          <h1 className="text-4xl sm:text-6xl font-black uppercase tracking-tight text-white mb-6">
-            ABOUT {BUSINESS.name}
-          </h1>
-          <p className="text-brand-text-sec text-sm sm:text-base font-light tracking-wide max-w-2xl mx-auto uppercase">
-            A premium corporate transportation and travel agency based in Gurugram, built on reliability and customer service excellence.
-          </p>
-        </div>
-      </section>
-
-      {/* Story & Philosophy Section */}
-      <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <SectionHeader
-              badge="Our Story"
-              title="Crafting Premium"
-              highlight="Journeys"
-              centered={false}
-            />
-            <div className="mt-8 space-y-6 text-brand-text-sec font-light text-sm sm:text-base leading-relaxed">
-              <p>
-                Serving customers since 2012, {BUSINESS.name} has built a trusted reputation as the premier provider of reliable taxi services and travel coordination across Gurugram, Delhi NCR, and Northern India. From our humble beginnings, our focus has always been on delivering professional service, customer satisfaction, and smooth travel experiences.
-              </p>
-              <p>
-                Whether you require prompt airport transfers, comfortable outstation travel, or dedicated corporate bookings for business executives, our fleet is equipped to handle your transit requirements with ease. Our team of highly experienced drivers are police-verified, thoroughly trained in road safety, and dedicated to ensuring safe and comfortable journeys on every route.
-              </p>
-              <p>
-                At the core of our business is a commitment to transparent pricing. We do not believe in surge pricing or hidden costs—what you are quoted is exactly what you pay. 
-              </p>
-              <p className="font-semibold text-white">
-                "Our commitment is simple: safe, reliable, and on-time travel, every single time."
-              </p>
-            </div>
-            <div className="mt-10">
-              <Link href="/booking">
-                <Button variant="primary">Book A Ride Now</Button>
-              </Link>
-            </div>
-          </div>
-          <div className="relative h-[480px] bg-brand-card border border-brand-border rounded-xl overflow-hidden">
-            <Image
-              src="https://images.unsplash.com/photo-1506015391300-4802dc74de2e?auto=format&fit=crop&q=80&w=800"
-              alt="Premium Sedan"
-              fill
-              className="object-cover grayscale hover:grayscale-0 transition-all duration-700"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Brand Divider */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="brand-divider" />
-      </div>
-
-      {/* Core Values Grid */}
-      <section className="py-24 bg-[#101826]/40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeader
-            badge="Why We Are Chosen"
-            title="Our Professional"
-            highlight="Standards"
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-16">
-            {[
-              {
-                icon: Shield,
-                title: "Safety First",
-                desc: "All vehicles undergo rigorous safety checks and are driven by vetted, experienced chauffeurs.",
-              },
-              {
-                icon: Clock,
-                title: "Absolute Punctuality",
-                desc: "We track flights and optimize routes to guarantee that we arrive at least 10 minutes before schedule.",
-              },
-              {
-                icon: Users,
-                title: "Customer-Centric",
-                desc: "24/7 dedicated dispatch and support team to handle last-minute booking modifications seamlessly.",
-              },
-              {
-                icon: Award,
-                title: "Transparent Billing",
-                desc: "No hidden charges, clean invoices, and instant booking confirmations on WhatsApp.",
-              },
-            ].map((value, idx) => (
-              <Card key={idx} variant="glass" className="hover:border-brand-blue" padding="lg">
-                <value.icon className="text-brand-blue mb-6" size={32} />
-                <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-3">
-                  {value.title}
-                </h3>
-                <p className="text-xs text-brand-text-sec font-light leading-relaxed">
-                  {value.desc}
+    <>
+      <div className="bg-[#f8f9fa] dark:bg-[#020617] py-16 lg:py-24">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">
+            <div>
+              <h1 className="text-4xl font-heading font-bold text-[#1a1a2e] dark:text-white mb-4">
+                About Tanvi Taxi Services
+              </h1>
+              <div className="green-underline mb-8"></div>
+              <div className="space-y-4 text-gray-600 dark:text-gray-300 leading-relaxed">
+                <p>
+                  Established in 2012, Tanvi Taxi Services has grown from a single vehicle operation to one of Delhi NCR's most trusted transportation partners. For over a decade, we have been committed to redefining travel by prioritizing safety, comfort, and reliability.
                 </p>
-              </Card>
-            ))}
+                <p>
+                  We specialize in a comprehensive range of services including outstation trips, seamless airport transfers, reliable corporate travel solutions, and curated religious tour packages across North India. Our deep understanding of passenger needs has allowed us to build a service that is both family-friendly and perfectly suited for corporate professionals.
+                </p>
+                <p>
+                  What truly sets us apart is our unwavering dedication to transparency. With Tanvi Taxi Services, there are no hidden charges or last-minute surprises—just honest pricing and a premium travel experience, available 24×7.
+                </p>
+              </div>
+            </div>
+            <div className="relative w-full h-[300px] lg:h-[400px]">
+              <Image
+                src="/images/vehicles/innova.png"
+                alt="Tanvi Taxi Services Fleet"
+                fill
+                className="object-contain"
+              />
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* Numbers / Achievements */}
-      <section className="py-24 border-t border-brand-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {[
-              { value: "6+", label: "Years Experience" },
-              { value: "50+", label: "Verified Vehicles" },
-              { value: "10k+", label: "Happy Customers" },
-              { value: "4.9★", label: "Google Rating" },
-            ].map((stat, idx) => (
-              <div key={idx} className="space-y-2">
-                <div className="text-3xl sm:text-5xl font-black text-brand-blue uppercase">
-                  {stat.value}
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-heading font-bold text-[#1a1a2e] dark:text-white uppercase mb-2">
+              What Makes Us Different
+            </h2>
+            <p className="text-[#22c55e] font-semibold tracking-wider text-sm mb-4">
+              ALL WELL-MAINTAINED CABS IN EXCELLENT CONDITION
+            </p>
+            <div className="green-underline"></div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
+            {differences.map((diff, idx) => (
+              <div key={idx} className="card-white p-8 text-center flex flex-col items-center">
+                <div className="bg-[#f8f9fa] dark:bg-[#1e293b] p-4 rounded-full text-[#22c55e] mb-6">
+                  {diff.icon}
                 </div>
-                <div className="text-[10px] sm:text-xs font-bold text-brand-text-sec uppercase tracking-widest">
-                  {stat.label}
-                </div>
+                <h3 className="font-heading font-bold text-xl text-[#1a1a2e] dark:text-white mb-3">
+                  {diff.title}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {diff.text}
+                </p>
               </div>
             ))}
           </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-[#0a1628] text-white p-10 rounded-2xl border-l-4 border-[#22c55e]">
+              <h3 className="font-heading font-bold text-2xl mb-4">Our Mission</h3>
+              <p className="text-gray-300 text-lg">
+                "To provide safe, reliable, and affordable transportation across Delhi NCR, ensuring every passenger reaches their destination with complete peace of mind."
+              </p>
+            </div>
+            <div className="bg-white dark:bg-[#1e293b] text-[#1a1a2e] dark:text-white p-10 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-xl">
+              <h3 className="font-heading font-bold text-2xl mb-4">Our Vision</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-lg">
+                "To become North India's most trusted taxi and tour partner, recognized for exceptional service quality, transparent practices, and customer-first approach."
+              </p>
+            </div>
+          </div>
         </div>
-      </section>
-    </div>
+      </div>
+      <ContactCTABand />
+    </>
   );
 }

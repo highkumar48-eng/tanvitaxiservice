@@ -1,123 +1,166 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
-import SectionHeader from "@/components/ui/SectionHeader";
-import { BUSINESS } from "@/lib/constants";
-
-const FAQS = [
-  {
-    question: "How do I book a taxi with Tanvi Taxi Services?",
-    answer: `You can book in 3 simple ways: (1) Call us at ${BUSINESS.phone}, (2) Send a WhatsApp message, or (3) Fill in our online booking form. We confirm your booking instantly.`,
-  },
-  {
-    question: "Are your drivers verified and trained?",
-    answer:
-      "Yes. All our drivers undergo police verification, have valid commercial driving licenses, and receive customer service training. Your safety is our top priority.",
-  },
-  {
-    question: "Do you provide airport pickup and drop services?",
-    answer:
-      "Absolutely. We provide 24×7 airport taxi service from and to IGI Airport (Terminal 1, 2 & 3). We track your flight so your driver is always ready — even if your flight is delayed.",
-  },
-  {
-    question: "What vehicles do you have in your fleet?",
-    answer:
-      "We operate Sedans (Swift Dzire, Honda City), SUVs (Ertiga, Scorpio), Innova Crysta, and Tempo Travellers (12–17 seater). All vehicles are AC-equipped and regularly serviced.",
-  },
-  {
-    question: "Is there a cancellation policy?",
-    answer:
-      "You can cancel your booking up to 2 hours before the pickup time at no charge. Cancellations made less than 2 hours before pickup may incur a small convenience fee.",
-  },
-  {
-    question: "Do you provide outstation taxi services?",
-    answer:
-      "Yes! We cover popular routes like Delhi to Jaipur, Agra, Chandigarh, Dehradun, Manali, Haridwar, Mathura, and more. One-way and round-trip options available.",
-  },
-  {
-    question: "How is the fare calculated?",
-    answer:
-      "Fare is based on the distance (km), vehicle type, and trip type (local/outstation). Use our Fare Calculator on this page for an instant estimate. All fares are inclusive of GST and we provide a receipt.",
-  },
-  {
-    question: "What payment methods do you accept?",
-    answer:
-      "We accept Cash, UPI (Google Pay, PhonePe, Paytm), and bank transfers. For corporate clients, monthly invoicing is available.",
-  },
-  {
-    question: "Do you offer monthly or corporate packages?",
-    answer:
-      "Yes. We offer custom monthly packages for corporate offices and regular travelers. Contact us on WhatsApp or call us for a tailored quote.",
-  },
-  {
-    question: "Is the vehicle sanitized before each trip?",
-    answer:
-      "Yes. All our vehicles are cleaned and sanitized before each trip. We maintain hygiene standards to ensure a safe and comfortable journey for every passenger.",
-  },
-];
+import { ChevronDown, MessageCircle } from "lucide-react";
+import ContactCTABand from "@/components/home/ContactCTABand";
 
 export default function FAQPage() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const faqCategories = [
+    {
+      title: "1. BOOKING QUESTIONS",
+      faqs: [
+        {
+          q: "How do I book a taxi with Tanvi Taxi Services?",
+          a: "Simply click any 'Book on WhatsApp' button, or call/WhatsApp us on +91-XXXXXXXXXX. Share your pickup location, drop location, date, time, and vehicle preference."
+        },
+        {
+          q: "How far in advance should I book?",
+          a: "For airport transfers, book at least 2 hours in advance. For outstation and tours, 24 hours in advance is recommended. We do accept last-minute bookings based on availability."
+        }
+      ]
+    },
+    {
+      title: "2. CANCELLATION POLICY",
+      faqs: [
+        {
+          q: "Can I cancel my booking?",
+          a: "Yes. Cancellations made 4+ hours before pickup are free. Cancellations within 4 hours may incur a 20% charge. No-shows are charged 50% of the fare."
+        }
+      ]
+    },
+    {
+      title: "3. PAYMENT METHODS",
+      faqs: [
+        {
+          q: "What payment methods do you accept?",
+          a: "We accept cash, UPI (Google Pay, PhonePe, Paytm), and bank transfer. Payment is collected at the end of the trip or as agreed at booking."
+        }
+      ]
+    },
+    {
+      title: "4. AIRPORT SERVICES",
+      faqs: [
+        {
+          q: "Do you offer flight tracking for airport pickups?",
+          a: "Yes. Share your flight number and we track arrivals in real-time, so your driver is always ready even if your flight is delayed."
+        }
+      ]
+    },
+    {
+      title: "5. CORPORATE SERVICES",
+      faqs: [
+        {
+          q: "Do you have corporate accounts?",
+          a: "Yes. We offer monthly billing, GST invoices, dedicated account manager, and priority booking for corporate clients. Contact us for a custom quote."
+        }
+      ]
+    },
+    {
+      title: "6. TOUR PACKAGES",
+      faqs: [
+        {
+          q: "Are tour packages customizable?",
+          a: "Yes, all tour packages can be customized for group size, duration, and specific stops. Prices are provided on inquiry via WhatsApp."
+        }
+      ]
+    },
+    {
+      title: "7. DRIVER INFORMATION",
+      faqs: [
+        {
+          q: "Are your drivers verified and licensed?",
+          a: "Yes. All Tanvi Taxi Services drivers hold valid commercial driving licenses, are police-verified, and have undergone background checks."
+        }
+      ]
+    },
+    {
+      title: "8. SAFETY MEASURES",
+      faqs: [
+        {
+          q: "What safety measures are in place?",
+          a: "GPS tracking on all vehicles, 24×7 driver monitoring, regular vehicle maintenance and sanitization, first-aid kit in every cab, and emergency contact protocols."
+        }
+      ]
+    }
+  ];
+
+  const [openIds, setOpenIds] = useState<Record<string, boolean>>({});
+
+  const toggleOpen = (catIdx: number, faqIdx: number) => {
+    const id = `${catIdx}-${faqIdx}`;
+    setOpenIds(prev => ({ ...prev, [id]: !prev[id] }));
+  };
 
   return (
-    <div className="bg-[#081423] min-h-screen text-white pt-8">
-      <section className="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          badge="FAQ Desk"
-          title="Frequently Asked"
-          highlight="Questions"
-          subtitle="Everything you need to know about airport pickups, outstation trips, fares, and fleet options."
-        />
+    <>
+      <div className="bg-[#f8f9fa] dark:bg-[#020617] py-16 lg:py-24">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="text-center mb-16">
+            <h1 className="text-4xl font-heading font-bold text-[#1a1a2e] dark:text-white mb-4">
+              Frequently Asked Questions
+            </h1>
+            <div className="green-underline mb-6"></div>
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg">
+              Find answers to common questions about our taxi services, booking process, policies, and more.
+            </p>
+          </div>
 
-        <div className="mt-12 space-y-3">
-          {FAQS.map((faq, i) => {
-            const isOpen = openIndex === i;
-            return (
-              <div
-                key={i}
-                className={`border transition-all duration-200 rounded-xl overflow-hidden ${
-                  isOpen
-                    ? "border-brand-blue bg-[#101826]"
-                    : "border-brand-border bg-[#141D2B] hover:border-brand-border/80"
-                }`}
-              >
-                <button
-                  onClick={() => setOpenIndex(isOpen ? null : i)}
-                  className="w-full flex items-center justify-between gap-4 px-6 py-4.5 text-left cursor-pointer"
-                  aria-expanded={isOpen}
-                >
-                  <span className={`text-xs font-bold uppercase tracking-wider transition-colors ${isOpen ? "text-brand-blue" : "text-white"}`}>
-                    {faq.question}
-                  </span>
-                  <ChevronDown
-                    size={16}
-                    className={`transform transition-transform duration-200 flex-shrink-0 ${
-                      isOpen ? "rotate-180 text-brand-blue" : "text-brand-text-sec"
-                    }`}
-                  />
-                </button>
-
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <div className="px-6 pb-5 text-xs text-brand-text-sec font-light leading-relaxed border-t border-brand-border pt-3">
-                        {faq.answer}
+          <div className="space-y-12">
+            {faqCategories.map((category, catIdx) => (
+              <div key={catIdx}>
+                <h2 className="text-xl font-heading font-bold text-[#22c55e] mb-6 tracking-wide">
+                  {category.title}
+                </h2>
+                <div className="space-y-4">
+                  {category.faqs.map((faq, faqIdx) => {
+                    const id = `${catIdx}-${faqIdx}`;
+                    const isOpen = !!openIds[id];
+                    return (
+                      <div key={id} className="card-white overflow-hidden shadow-sm">
+                        <button
+                          className="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none hover:bg-gray-50 dark:hover:bg-[#1e293b]"
+                          onClick={() => toggleOpen(catIdx, faqIdx)}
+                        >
+                          <span className="font-heading font-bold text-[#1a1a2e] dark:text-white pr-4">
+                            {faq.q}
+                          </span>
+                          <ChevronDown 
+                            size={20} 
+                            className={`text-[#22c55e] transform transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180' : ''}`}
+                          />
+                        </button>
+                        <div 
+                          className={`px-6 text-gray-600 dark:text-gray-400 transition-all duration-300 ease-in-out ${
+                            isOpen ? 'max-h-[500px] pb-4 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+                          }`}
+                        >
+                          <div className="pt-2 border-t border-gray-100 dark:border-gray-800 mt-2">
+                            {faq.a}
+                          </div>
+                        </div>
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                    );
+                  })}
+                </div>
               </div>
-            );
-          })}
+            ))}
+          </div>
+
+          <div className="mt-16 bg-[#0a1628] rounded-xl p-8 text-center text-white border border-gray-800 shadow-xl">
+            <h3 className="font-heading font-bold text-2xl mb-4">Still have questions?</h3>
+            <p className="text-gray-300 mb-6">Our customer support team is available 24×7 to assist you.</p>
+            <a 
+              href="https://wa.me/91XXXXXXXXXX" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="btn-green inline-flex px-8 gap-2"
+            >
+              <MessageCircle size={20} /> Chat with Support
+            </a>
+          </div>
         </div>
-      </section>
-    </div>
+      </div>
+      <ContactCTABand />
+    </>
   );
 }

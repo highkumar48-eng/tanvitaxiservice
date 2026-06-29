@@ -1,85 +1,43 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap");
 
 @import "tailwindcss";
 
-/* ── Tailwind v4 Theme Configuration ─────────────────────────────────────── */
 @theme {
-  /* Brand Colors — Custom Premium Palette */
-  --color-brand-bg:      var(--brand-bg);
-  --color-brand-bg-sec:  var(--brand-bg-sec);
-  --color-brand-card:    var(--brand-card);
-  --color-brand-text:    var(--brand-text);
-  --color-brand-text-sec: var(--brand-text-sec);
-  --color-brand-blue:    var(--brand-blue);
-  --color-brand-green:   var(--brand-green);
-  --color-brand-border:  var(--brand-border);
-  --color-brand-hover:   var(--brand-hover);
+  --color-primary-navy: #0a1628;
+  --color-primary-green: #22c55e;
+  --color-primary-green-dark: #16a34a;
+  --color-light-gray: #f8f9fa;
+  --color-dark-text: #1a1a2e;
+  --color-muted-text: #6b7280;
 
-  /* Fonts */
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-display: "Inter", system-ui, -apple-system, sans-serif;
+  --font-heading: "Poppins", system-ui, -apple-system, sans-serif;
 
-  /* Animations */
-  --animate-marquee: marquee 30s linear infinite;
-  --animate-fade-in: fade-in 0.5s ease-out;
-  --animate-slide-up: slide-up 0.5s ease-out;
+  --animate-pulse-slow: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* ── Keyframes ──────────────────────────────────────────────────────────── */
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .8; transform: scale(1.05); }
 }
 
-@keyframes fade-in {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-@keyframes slide-up {
-  0% { transform: translateY(20px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes pulse-ring {
-  0% { transform: scale(1); opacity: 0.6; }
-  100% { transform: scale(1.5); opacity: 0; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-/* ── Design Tokens ──────────────────────────────────────────────────────── */
 :root {
-  --brand-bg:      #081423;
-  --brand-bg-sec:  #101826;
-  --brand-card:    #141D2B;
-  --brand-text:    #FFFFFF;
-  --brand-text-sec: #C7CDD8;
-  --brand-blue:    #2D7FF9;
-  --brand-green:   #12B76A;
-  --brand-border:  rgba(255, 255, 255, 0.08);
-  --brand-hover:   rgba(255, 255, 255, 0.06);
-
-  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --bg: #ffffff;
+  --text: #1a1a2e;
+  --card-bg: #f8f9fa;
+  --nav-bg: #0a1628;
+  --footer-bg: #0a1628;
+  --primary-green: #22c55e;
 }
 
-.light-theme {
-  --brand-bg:      #F8FAFC;
-  --brand-bg-sec:  #F1F5F9;
-  --brand-card:    #FFFFFF;
-  --brand-text:    #0F172A;
-  --brand-text-sec: #475569;
-  --brand-blue:    #2D7FF9;
-  --brand-green:   #12B76A;
-  --brand-border:  rgba(15, 23, 42, 0.08);
-  --brand-hover:   rgba(15, 23, 42, 0.04);
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --text: #e2e8f0;
+  --card-bg: #1e293b;
+  --nav-bg: #020617;
+  --footer-bg: #020617;
 }
 
-/* ── Base Reset ─────────────────────────────────────────────────────────── */
 *,
 *::before,
 *::after {
@@ -92,169 +50,78 @@ html {
 }
 
 body {
-  font-family: var(--font-sans, "Inter", system-ui, sans-serif);
-  background-color: var(--brand-bg);
-  color: var(--brand-text);
+  font-family: var(--font-sans);
+  background-color: var(--bg);
+  color: var(--text);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ── Section anchor scroll offset ──────────────────────────────────────── */
-section[id] {
-  scroll-margin-top: 80px;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
 }
 
-/* ── Prevent image overflow ──────────────────────────────────────────────── */
-img, video, iframe {
-  max-width: 100%;
-}
-
-/* ── Mobile touch improvements ───────────────────────────────────────────── */
-button, a, [role="button"] {
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* ── Custom Scrollbar ───────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--brand-bg); }
-::-webkit-scrollbar-thumb { background: var(--brand-border); border-radius: 0px; }
-::-webkit-scrollbar-thumb:hover { background: var(--brand-blue); }
-
-/* ── Text Selection ─────────────────────────────────────────────────────── */
-::selection {
-  background-color: rgba(45, 127, 249, 0.2);
-  color: #ffffff;
-}
-
-/* ── Focus Rings ────────────────────────────────────────────────────────── */
-:focus-visible {
-  outline: 2px solid var(--brand-blue);
-  outline-offset: 2px;
-  border-radius: 0px;
-}
-
-/* ── Skip Link ──────────────────────────────────────────────────────────── */
-.skip-link {
-  position: absolute;
-  top: -100%;
-  left: 1rem;
-  z-index: 9999;
-  padding: 0.5rem 1rem;
-  background: var(--brand-blue);
-  color: white;
-  font-weight: 700;
-  border-radius: 0px;
-  transition: top var(--transition-fast);
-}
-.skip-link:focus { top: 1rem; }
-
-/* ── Card Styles (Premium Smoother Corners) ─────────────────────────────── */
-.card-premium {
-  background: var(--brand-card);
-  border: 1px solid var(--brand-border);
-  border-radius: 12px;
-  transition: all var(--transition-base);
-}
-.card-premium:hover {
-  border-color: var(--brand-blue);
-}
-
-/* ── Marquee ────────────────────────────────────────────────────────────── */
-.marquee-wrapper { overflow: hidden; white-space: nowrap; }
-.marquee-track {
-  display: inline-flex;
-  animation: marquee 30s linear infinite;
-}
-.marquee-track:hover { animation-play-state: paused; }
-
-/* ── Buttons (Industrial Precision, Sharp Corners) ────────────────────────── */
-.btn-primary {
-  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-  padding: 0.875rem 2rem;
-  background: transparent; color: #ffffff;
-  font-weight: 700; font-size: 0.875rem;
-  border-radius: 0px;
-  border: 1px solid #ffffff; cursor: pointer;
-  transition: all var(--transition-base);
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
-.btn-primary:hover { background: #ffffff; color: #000000; }
-.btn-primary:active { transform: scale(0.98); }
-
-.btn-secondary {
-  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-  padding: 0.875rem 2rem;
-  background: var(--brand-card); color: #ffffff;
-  font-weight: 700; font-size: 0.875rem;
-  border-radius: 0px;
-  border: 1px solid var(--brand-border); cursor: pointer;
-  transition: all var(--transition-base);
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
-.btn-secondary:hover { border-color: var(--brand-blue); background: var(--brand-hover); }
-
-.btn-whatsapp {
-  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-  padding: 0.875rem 2rem;
-  background: var(--brand-green); color: white;
-  font-weight: 700; font-size: 0.875rem;
-  border-radius: 0px; border: none; cursor: pointer;
-  transition: all var(--transition-base);
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
-.btn-whatsapp:hover { opacity: 0.9; }
-
-/* ── Form Input Styles (Sharp Corners) ──────────────────────────────────── */
-.input-premium {
-  width: 100%;
-  padding: 0.875rem 1rem;
-  background: var(--brand-card);
-  border: 1px solid var(--brand-border);
-  border-radius: 0px;
-  font-size: 0.9rem;
-  color: #ffffff;
-  transition: all var(--transition-fast);
-}
-.input-premium:focus {
-  outline: none;
-  border-color: #ffffff;
-  background: rgba(255,255,255,0.03);
-}
-.input-premium::placeholder { color: rgba(255,255,255,0.3); }
-
-/* ── Divider (Inspired by M-Stripe but using brand specific custom line) ──── */
-.brand-divider {
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, var(--brand-blue) 0%, #1e5bb8 50%, var(--brand-green) 100%);
-  border-radius: 0px;
-  margin: 1.5rem 0;
-}
-
-/* ── Float animation for hero elements ──────────────────────────────────── */
-.float-slow {
-  animation: float 6s ease-in-out infinite;
-}
-
-/* ── Pulse ring for FAB ─────────────────────────────────────────────────── */
-.pulse-ring {
+.green-underline {
   position: relative;
-}
-.pulse-ring::before {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  background: var(--brand-green);
-  animation: pulse-ring 2s ease-out infinite;
+  display: inline-block;
+  padding-bottom: 0.5rem;
 }
 
-/* ── Utility ────────────────────────────────────────────────────────────── */
-.flex > * { min-width: 0; }
-.drag-scroll { cursor: grab; user-select: none; }
-.drag-scroll:active { cursor: grabbing; }
+.green-underline::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background-color: var(--primary-green);
+  border-radius: 2px;
+}
+
+.card-white {
+  background-color: var(--card-bg);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
+}
+
+[data-theme="dark"] .card-white {
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.btn-green {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--primary-green);
+  color: white;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: background-color 0.2s;
+}
+
+.btn-green:hover {
+  background-color: #16a34a;
+}
+
+.btn-navy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--nav-bg);
+  color: white;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: opacity 0.2s;
+}
+
+.btn-navy:hover {
+  opacity: 0.9;
+}

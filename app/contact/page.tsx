@@ -1,223 +1,139 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Phone, Mail, MapPin, Send, CheckCircle2 } from "lucide-react";
-import { useState } from "react";
-import { BUSINESS, CALL_URL, WHATSAPP_PREFILL } from "@/lib/constants";
-import SectionHeader from "@/components/ui/SectionHeader";
-import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
-
-const contactSchema = z.object({
-  name: z.string().min(2, "Enter your name"),
-  mobile: z.string().regex(/^[6-9]\d{9}$/, "Enter a valid 10-digit mobile number"),
-  message: z.string().min(10, "Please write at least 10 characters"),
-});
-
-type ContactFormData = z.infer<typeof contactSchema>;
-
-function WAIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className ?? "w-5 h-5"}>
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-    </svg>
-  );
-}
-
-const inputCls =
-  "w-full px-4 py-3 bg-brand-card border border-brand-border rounded-none text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-blue transition-all duration-200";
+import { Phone, MessageCircle, Mail, Clock, MapPin } from "lucide-react";
+import { COMPANY } from "@/lib/constants";
 
 export default function ContactPage() {
-  const [sent, setSent] = useState(false);
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const fd = new FormData(e.target as HTMLFormElement);
+    const data = Object.fromEntries(fd.entries());
+    
+    let msg = `Hi Tanvi Taxi Services, I have an inquiry:\n\n`;
+    msg += `Name: ${data.name}\n`;
+    msg += `Phone: ${data.phone}\n`;
+    if (data.email) msg += `Email: ${data.email}\n`;
+    msg += `Message: ${data.message}\n`;
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-  } = useForm<ContactFormData>({ resolver: zodResolver(contactSchema) });
-
-  const onSubmit = async (data: ContactFormData) => {
-    await new Promise((r) => setTimeout(r, 600));
-    const msg = `Hi Tanvi Taxi Services!\nName: ${data.name}\nMobile: ${data.mobile}\nMessage: ${data.message}`;
-    window.open(
-      `https://wa.me/${BUSINESS.whatsapp}?text=${encodeURIComponent(msg)}`,
-      "_blank",
-      "noopener,noreferrer"
-    );
-    setSent(true);
-    reset();
-    setTimeout(() => setSent(false), 5000);
+    window.open(`https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank");
   };
 
   return (
-    <div className="bg-[#081423] min-h-screen text-white pt-8">
-      {/* Page Header */}
-      <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          badge="Contact Desk"
-          title="Get In"
-          highlight="Touch"
-          subtitle="Our representatives are available 24 hours a day, 7 days a week to handle logistics, dispatch adjustments, and billing requests."
-        />
-      </section>
+    <div className="bg-[#f8f9fa] dark:bg-[#020617] py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl font-heading font-bold text-[#1a1a2e] dark:text-white mb-4">
+            Contact Us
+          </h1>
+          <div className="green-underline mb-6"></div>
+          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg">
+            We are here to help you 24×7. Reach out to us via phone, WhatsApp, or email for bookings, inquiries, or feedback.
+          </p>
+        </div>
 
-      {/* Contact Grid */}
-      <section className="pb-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          {/* Details Column */}
-          <div className="lg:col-span-5 space-y-6">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-white mb-6">
-              Official Channels
-            </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          <div className="card-white p-8 text-center flex flex-col items-center hover:border-[#22c55e] transition-colors">
+            <div className="bg-[#f8f9fa] dark:bg-[#1e293b] p-4 rounded-full text-[#22c55e] mb-4">
+              <Phone size={32} />
+            </div>
+            <h3 className="font-heading font-bold text-xl text-[#1a1a2e] dark:text-white mb-2">Call Us</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-4 flex-1">Available 24×7 for instant booking and support.</p>
+            <a href={`tel:${COMPANY.phone}`} className="font-bold text-[#22c55e] hover:text-[#16a34a]">{COMPANY.phone}</a>
+          </div>
 
-            <a
-              href={CALL_URL}
-              className="block bg-brand-card border border-brand-border p-5 hover:border-brand-blue transition-all"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-brand-bg-sec border border-brand-border flex items-center justify-center text-brand-blue">
-                  <Phone size={18} />
-                </div>
-                <div>
-                  <div className="text-[10px] font-bold text-brand-text-sec uppercase tracking-[0.5px]">Direct Line</div>
-                  <div className="text-sm font-semibold text-white mt-0.5">{BUSINESS.phone}</div>
-                </div>
-              </div>
-            </a>
+          <div className="card-white p-8 text-center flex flex-col items-center hover:border-[#22c55e] transition-colors">
+            <div className="bg-[#f8f9fa] dark:bg-[#1e293b] p-4 rounded-full text-[#25D366] mb-4">
+              <MessageCircle size={32} />
+            </div>
+            <h3 className="font-heading font-bold text-xl text-[#1a1a2e] dark:text-white mb-2">WhatsApp</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-4 flex-1">Quickest way to get fare estimates and confirm bookings.</p>
+            <a href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank" rel="noopener noreferrer" className="font-bold text-[#25D366] hover:text-[#1DA851]">+91-{COMPANY.whatsapp.substring(2)}</a>
+          </div>
 
-            <a
-              href={WHATSAPP_PREFILL()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block bg-brand-card border border-brand-border p-5 hover:border-brand-blue transition-all"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-brand-bg-sec border border-brand-border flex items-center justify-center text-brand-green">
-                  <WAIcon />
-                </div>
-                <div>
-                  <div className="text-[10px] font-bold text-brand-text-sec uppercase tracking-[0.5px]">WhatsApp Desk</div>
-                  <div className="text-sm font-semibold text-white mt-0.5">Chat Instantly</div>
-                </div>
-              </div>
-            </a>
+          <div className="card-white p-8 text-center flex flex-col items-center hover:border-[#22c55e] transition-colors">
+            <div className="bg-[#f8f9fa] dark:bg-[#1e293b] p-4 rounded-full text-[#22c55e] mb-4">
+              <Mail size={32} />
+            </div>
+            <h3 className="font-heading font-bold text-xl text-[#1a1a2e] dark:text-white mb-2">Email</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-4 flex-1">For corporate inquiries and formal quotations.</p>
+            <a href={`mailto:${COMPANY.email}`} className="font-bold text-[#22c55e] hover:text-[#16a34a] break-all">{COMPANY.email}</a>
+          </div>
+        </div>
 
-            <a
-              href={`mailto:${BUSINESS.email}`}
-              className="block bg-brand-card border border-brand-border p-5 hover:border-brand-blue transition-all"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-brand-bg-sec border border-brand-border flex items-center justify-center text-brand-blue">
-                  <Mail size={18} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Office Info & Map */}
+          <div>
+            <div className="card-white p-8 mb-8">
+              <h3 className="font-heading font-bold text-2xl text-[#1a1a2e] dark:text-white mb-6">Our Office</h3>
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="bg-[#f8f9fa] dark:bg-[#1e293b] p-3 rounded-lg text-[#22c55e]">
+                    <Clock size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-[#1a1a2e] dark:text-white">Business Hours</h4>
+                    <p className="text-gray-600 dark:text-gray-400">Monday – Sunday, 24×7</p>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-[10px] font-bold text-brand-text-sec uppercase tracking-[0.5px]">Email Address</div>
-                  <div className="text-sm font-semibold text-white mt-0.5 truncate">{BUSINESS.email}</div>
-                </div>
-              </div>
-            </a>
-
-            <div className="block bg-brand-card border border-brand-border p-5">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-brand-bg-sec border border-brand-border flex items-center justify-center text-brand-text-sec">
-                  <MapPin size={18} />
-                </div>
-                <div>
-                  <div className="text-[10px] font-bold text-brand-text-sec uppercase tracking-[0.5px]">Headquarters</div>
-                  <div className="text-xs font-light text-white mt-0.5">{BUSINESS.address}</div>
+                <div className="flex items-start gap-4">
+                  <div className="bg-[#f8f9fa] dark:bg-[#1e293b] p-3 rounded-lg text-[#22c55e]">
+                    <MapPin size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-[#1a1a2e] dark:text-white">Location</h4>
+                    <p className="text-gray-600 dark:text-gray-400">{COMPANY.address}</p>
+                  </div>
                 </div>
               </div>
             </div>
+            
+            <div className="card-white overflow-hidden h-[350px]">
+              {/* Placeholder Map - Client to update src */}
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d112173.34415849887!2d76.95317937512966!3d28.422885871279883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d19d582e38859%3A0x2cf5fe8e5c64b1e!2sGurugram%2C%20Haryana!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen={false} 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
           </div>
 
-          {/* Form Column */}
-          <div className="lg:col-span-7">
-            <Card variant="solid" padding="lg">
-              <h3 className="text-xs font-bold uppercase tracking-widest text-white mb-6">
-                Send Corporate Message
-              </h3>
-
-              {sent ? (
-                <div className="py-12 text-center">
-                  <CheckCircle2 size={48} className="text-brand-green mx-auto mb-4" />
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-white">
-                    Message Forwarded to WhatsApp
-                  </h4>
-                  <p className="text-xs text-brand-text-sec font-light mt-2">
-                    Thank you. We will respond with pricing metrics shortly.
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
-                  <div>
-                    <label className="text-[10px] font-bold text-brand-text-sec uppercase tracking-widest block mb-2">
-                      Full Name
-                    </label>
-                    <input
-                      {...register("name")}
-                      placeholder="Enter your name"
-                      className={inputCls}
-                    />
-                    {errors.name?.message && (
-                      <p className="text-xs text-red-400 mt-1">{errors.name.message}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="text-[10px] font-bold text-brand-text-sec uppercase tracking-widest block mb-2">
-                      Mobile Number
-                    </label>
-                    <input
-                      {...register("mobile")}
-                      placeholder="e.g. 9876543210"
-                      className={inputCls}
-                    />
-                    {errors.mobile?.message && (
-                      <p className="text-xs text-red-400 mt-1">{errors.mobile.message}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="text-[10px] font-bold text-brand-text-sec uppercase tracking-widest block mb-2">
-                      Requirement Detail
-                    </label>
-                    <textarea
-                      {...register("message")}
-                      rows={4}
-                      placeholder="Briefly describe your taxi or travel package requirement..."
-                      className={`${inputCls} resize-none`}
-                    />
-                    {errors.message?.message && (
-                      <p className="text-xs text-red-400 mt-1">{errors.message.message}</p>
-                    )}
-                  </div>
-
-                  <Button variant="primary" type="submit" isLoading={isSubmitting} fullWidth>
-                    Submit Query
-                  </Button>
-                </form>
-              )}
-            </Card>
+          {/* Quick Contact Form */}
+          <div className="card-white p-8 md:p-10">
+            <h3 className="font-heading font-bold text-2xl text-[#1a1a2e] dark:text-white mb-2">Send an Inquiry</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-8">Fill out the form below and we will get back to you immediately.</p>
+            
+            <form onSubmit={handleFormSubmit} className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Your Name*</label>
+                <input type="text" name="name" required className="w-full p-3 bg-white text-gray-900 border border-gray-300 rounded focus:outline-none focus:border-[#22c55e]" />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number*</label>
+                <input type="tel" name="phone" required className="w-full p-3 bg-white text-gray-900 border border-gray-300 rounded focus:outline-none focus:border-[#22c55e]" />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
+                <input type="email" name="email" className="w-full p-3 bg-white text-gray-900 border border-gray-300 rounded focus:outline-none focus:border-[#22c55e]" />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message*</label>
+                <textarea name="message" required rows={4} className="w-full p-3 bg-white text-gray-900 border border-gray-300 rounded focus:outline-none focus:border-[#22c55e]" placeholder="How can we help you?"></textarea>
+              </div>
+              
+              <button type="submit" className="w-full btn-green py-4 text-lg justify-center shadow-lg">
+                Send via WhatsApp →
+              </button>
+            </form>
           </div>
         </div>
-      </section>
-
-      {/* Map Embed Section */}
-      <section className="border-t border-brand-border h-[400px] w-full relative">
-        <iframe
-          src={BUSINESS.mapEmbedUrl}
-          width="100%"
-          height="100%"
-          style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) grayscale(80%)" }}
-          allowFullScreen
-          loading="lazy"
-          title="Google Map Embed"
-        />
-      </section>
+      </div>
     </div>
   );
 }
